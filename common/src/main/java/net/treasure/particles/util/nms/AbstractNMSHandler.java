@@ -18,6 +18,10 @@ public abstract class AbstractNMSHandler {
 
     public abstract Object getColorData(ParticleEffect effect, Color color, int alpha);
 
+    public Object getSpellData(ParticleEffect effect, Color color, int alpha, float power) {
+        return getColorData(effect, color, alpha);
+    }
+
     public abstract Object getDustData(Color color, float size);
 
     public abstract Object getDustTransitionData(Color color, Color transition, float size);

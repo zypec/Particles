@@ -14,14 +14,15 @@ import java.util.stream.Collectors;
 
 import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.CAN_BE_COLORED;
 import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.DIRECTIONAL;
-import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.DUST;
+import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.PARAM_DUST;
 import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.OFFSET_COLOR;
 import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.PARAM_COLOR;
-import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.REQUIRES_POWER;
-import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.REQUIRES_BLOCK;
+import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.PARAM_BLOCK;
 import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.REQUIRES_COLOR;
-import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.REQUIRES_ITEM;
-import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.REQUIRES_TARGET;
+import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.PARAM_ITEM;
+import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.REQUIRES_POWER;
+import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.PARAM_TARGET;
+import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.PARAM_SPELL;
 
 public enum ParticleEffect {
     /**
@@ -93,7 +94,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle needs a block texture in order to work</li>
      * </ul>
      */
-    BLOCK_CRACK("block", REQUIRES_BLOCK),
+    BLOCK_CRACK("block", PARAM_BLOCK),
     /**
      * <p>Unknown.</p>
      * <b>Information</b>
@@ -103,7 +104,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle needs a block texture in order to work</li>
      * </ul>
      */
-    BLOCK_CRUMBLE(21, 2, "block_crumble", REQUIRES_BLOCK),
+    BLOCK_CRUMBLE(21, 2, "block_crumble", PARAM_BLOCK),
     /**
      * <p>
      * Marks the position of barriers and light blocks
@@ -116,7 +117,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle needs a block texture in order to work</li>
      * </ul>
      */
-    BLOCK_MARKER(18, "block_marker", REQUIRES_BLOCK),
+    BLOCK_MARKER(18, "block_marker", PARAM_BLOCK),
     /**
      * <p>
      * Appears around entities splashing in water, emitted by guardian lasers,
@@ -367,7 +368,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle supports custom size with 2 colors, it will display a fade animation between the two colors</li>
      * </ul>
      */
-    DUST_COLOR_TRANSITION(17, "dust_color_transition", CAN_BE_COLORED, DUST, REQUIRES_COLOR),
+    DUST_COLOR_TRANSITION(17, "dust_color_transition", CAN_BE_COLORED, PARAM_DUST, REQUIRES_COLOR),
     /**
      * <p>Produced by mace smash attacks.</p>
      * <b>Information</b>
@@ -377,7 +378,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle needs a block texture to work</li>
      * </ul>
      */
-    DUST_PILLAR(20, 4, "dust_pillar", REQUIRES_BLOCK),
+    DUST_PILLAR(20, 4, "dust_pillar", PARAM_BLOCK),
     /**
      * <p>Shown when adding items to decorated pots.</p>
      * <b>Information</b>
@@ -491,7 +492,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle needs a block texture in order to work</li>
      * </ul>
      */
-    FALLING_DUST("falling_dust", REQUIRES_BLOCK),
+    FALLING_DUST("falling_dust", PARAM_BLOCK),
     /**
      * <p>Drips off beehives and bee nests that are full of honey.</p>
      * <b>Information</b>
@@ -682,7 +683,7 @@ public enum ParticleEffect {
      *     </li>
      * </ul>
      */
-    ITEM_CRACK("item", DIRECTIONAL, REQUIRES_ITEM),
+    ITEM_CRACK("item", DIRECTIONAL, PARAM_ITEM),
     /**
      * <p>Created when {@link #FALLING_HONEY} particles hit the ground.</p>
      * <p>
@@ -818,7 +819,7 @@ public enum ParticleEffect {
      *     <li>Extra: offsetX, offsetY and offsetZ represent the rgb values of the particle, the amount has to be 0 or the color won't work</li>
      * </ul>
      */
-    REDSTONE("dust", CAN_BE_COLORED, DUST, REQUIRES_COLOR),
+    REDSTONE("dust", CAN_BE_COLORED, PARAM_DUST, REQUIRES_COLOR),
     /**
      * <p>Floats off the top of respawn anchors.</p>
      * <b>Information</b>
@@ -1014,7 +1015,7 @@ public enum ParticleEffect {
      *     <li>Extra: Only the motion on the y-axis can be controlled, the motion on the x- and z-axis are multiplied by 0.1 when setting the values to 0</li>
      * </ul>
      */
-    SPELL("effect", checkVersion(21, 9) ? List.of(PARAM_COLOR, CAN_BE_COLORED) : List.of()),
+    SPELL("effect", checkVersion(21, 9) ? List.of(PARAM_SPELL, REQUIRES_POWER, CAN_BE_COLORED) : List.of()),
     /**
      * <p>
      * Produced when splash potions or lingering
@@ -1028,7 +1029,7 @@ public enum ParticleEffect {
      *     <li>Extra: Only the motion on the y-axis can be controlled, the motion on the x- and z-axis are multiplied by 0.1 when setting the values to 0</li>
      * </ul>
      */
-    SPELL_INSTANT("instant_effect", checkVersion(21, 9) ? List.of(PARAM_COLOR, CAN_BE_COLORED) : List.of()),
+    SPELL_INSTANT("instant_effect", checkVersion(21, 9) ? List.of(PARAM_SPELL, REQUIRES_POWER, CAN_BE_COLORED) : List.of()),
     /**
      * <p>
      * Emitted by tipped arrows, produced by ravagers when stunned,
@@ -1141,7 +1142,7 @@ public enum ParticleEffect {
      *     <li>Extra: ???</li>
      * </ul>
      */
-    TRAIL(21, 2, "trail", CAN_BE_COLORED, REQUIRES_COLOR, REQUIRES_TARGET),
+    TRAIL(21, 2, "trail", CAN_BE_COLORED, REQUIRES_COLOR, PARAM_TARGET),
     /**
      * <p>Produced by players and mobs with the Trial Omen effect.</p>
      * <b>Information</b>
@@ -1193,7 +1194,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle needs a target location and duration value in order to work</li>
      * </ul>
      */
-    VIBRATION(19, "vibration", REQUIRES_TARGET),
+    VIBRATION(19, "vibration", PARAM_TARGET),
     /**
      * <p>Produced when hitting villagers or when villagers fail to breed.</p>
      * <b>Information</b>
@@ -1368,13 +1369,15 @@ public enum ParticleEffect {
     public enum Property {
         DIRECTIONAL,
         CAN_BE_COLORED,
-        DUST,
         OFFSET_COLOR,
+        PARAM_ITEM,
+        PARAM_BLOCK,
+        PARAM_DUST,
         PARAM_COLOR,
+        PARAM_SPELL,
+        PARAM_TARGET,
+        // Reader Requirements
         REQUIRES_COLOR,
-        REQUIRES_BLOCK,
-        REQUIRES_ITEM,
-        REQUIRES_TARGET,
         REQUIRES_POWER
     }
 }

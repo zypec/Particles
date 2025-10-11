@@ -19,8 +19,8 @@ public class TargetParticleReader extends ParticleReader<TargetParticle> {
     }
 
     public static boolean validateContext(ParticleReader<?> reader, ParticleReader.Context<?> c) throws ReaderException {
-        if (!c.script().particle().hasProperty(ParticleEffect.Property.REQUIRES_TARGET)) {
-            reader.error(c.effect(), c.type(), c.line(), "You can only use these particles for target script: " + ParticleEffect.byProperty(ParticleEffect.Property.REQUIRES_TARGET).stream().map(ParticleEffect::getFieldName).collect(Collectors.joining(", ")));
+        if (!c.script().particle().hasProperty(ParticleEffect.Property.PARAM_TARGET)) {
+            reader.error(c.effect(), c.type(), c.line(), "You can only use these particles for target script: " + ParticleEffect.byProperty(ParticleEffect.Property.PARAM_TARGET).stream().map(ParticleEffect::getFieldName).collect(Collectors.joining(", ")));
             return false;
         }
         return true;

@@ -20,6 +20,7 @@ import net.treasure.particles.version.v1_21_R6.data.NMSGenericData;
 import net.treasure.particles.version.v1_21_R6.data.color.NMSColorData;
 import net.treasure.particles.version.v1_21_R6.data.color.NMSDustData;
 import net.treasure.particles.version.v1_21_R6.data.color.NMSDustTransitionData;
+import net.treasure.particles.version.v1_21_R6.data.color.NMSSpellData;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -104,6 +105,11 @@ public class NMSHandler extends AbstractNMSHandler {
     @Override
     public Object getColorData(ParticleEffect effect, Color color, int alpha) {
         return new NMSColorData(effect, alpha, color.getRed(), color.getGreen(), color.getBlue()).toNMS();
+    }
+
+    @Override
+    public Object getSpellData(ParticleEffect effect, Color color, int alpha, float power) {
+        return new NMSSpellData(effect, alpha, color.getRed(), color.getGreen(), color.getBlue(), power).toNMS();
     }
 
     @Override

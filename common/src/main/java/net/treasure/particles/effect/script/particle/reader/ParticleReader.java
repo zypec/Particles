@@ -128,7 +128,7 @@ public abstract class ParticleReader<T extends ParticleSpawner> extends ScriptRe
 
         addValidArgument(c -> {
             var particle = c.script().particle();
-            if (particle != null && !particle.hasProperty(Property.REQUIRES_ITEM)) {
+            if (particle != null && !particle.hasProperty(Property.PARAM_ITEM)) {
                 error(c, "You cannot use '" + c.key() + "' with this particle effect: minecraft:" + particle.getFieldName());
                 return;
             }
@@ -139,7 +139,7 @@ public abstract class ParticleReader<T extends ParticleSpawner> extends ScriptRe
 
         addValidArgument(c -> {
             var particle = c.script().particle();
-            if (particle != null && !particle.hasProperty(Property.REQUIRES_BLOCK)) {
+            if (particle != null && !particle.hasProperty(Property.PARAM_BLOCK)) {
                 error(c, "You cannot use '" + c.key() + "' with this particle effect: minecraft:" + particle.getFieldName());
                 return;
             }

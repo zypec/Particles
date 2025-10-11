@@ -14,6 +14,7 @@ import net.treasure.particles.effect.data.PlayerEffectData;
 import net.treasure.particles.effect.handler.HandlerEvent;
 import net.treasure.particles.effect.script.Script;
 import net.treasure.particles.effect.script.argument.ScriptArgument;
+import net.treasure.particles.effect.script.argument.type.FloatArgument;
 import net.treasure.particles.effect.script.argument.type.IntArgument;
 import net.treasure.particles.effect.script.argument.type.RangeArgument;
 import net.treasure.particles.effect.script.argument.type.VectorArgument;
@@ -129,7 +130,7 @@ public class ParticleSpawner extends Script {
     }
 
     public void updateParticleData(ParticleBuilder builder, EffectData data) {
-        if (particleData != null) {
+        if (colorData == null && particleData != null) {
             builder.data(particleData instanceof ScriptArgument<?> argument ? Particles.NMS.getGenericData(particle, argument.get(this, data)) : particleData);
             return;
         }
@@ -140,7 +141,7 @@ public class ParticleSpawner extends Script {
             return;
         }
 
-        if (particle.hasProperty(Property.DUST)) {
+        if (particle.hasProperty(Property.PARAM_DUST)) {
             var size = this.size != null ? this.size.get(this, data) : 1;
             if (particle == ParticleEffect.DUST_COLOR_TRANSITION)
                 if (colorData instanceof DuoImpl duo) {
@@ -150,6 +151,8 @@ public class ParticleSpawner extends Script {
                     builder.data(Particles.NMS.getDustTransitionData(colorData.next(data), colorData.tempNext(data), size));
             else
                 builder.data(Particles.NMS.getDustData(colorData.next(data), size));
+        } else if (particle.hasProperty(Property.PARAM_SPELL)) {
+            builder.data(Particles.NMS.getSpellData(particle, colorData.next(data), colorAlpha, particleData instanceof FloatArgument power ? power.get(this, data) : 1F));
         } else if (particle.hasProperty(Property.PARAM_COLOR)) {
             builder.data(Particles.NMS.getColorData(particle, colorData.next(data), colorAlpha));
         } else if (particle.hasProperty(Property.OFFSET_COLOR)) {
