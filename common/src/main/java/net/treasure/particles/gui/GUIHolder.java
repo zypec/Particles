@@ -10,7 +10,6 @@ import net.treasure.particles.color.group.ColorGroup;
 import net.treasure.particles.effect.Effect;
 import net.treasure.particles.effect.data.EffectData;
 import net.treasure.particles.util.item.CustomItem;
-import net.treasure.particles.util.logging.ComponentLogger;
 import net.treasure.particles.util.tuples.Pair;
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
@@ -83,7 +82,6 @@ public class GUIHolder implements InventoryHolder {
                 try {
                     color = Gradient.hex2Rgb(effect.getColorAnimation());
                 } catch (Exception ignored) {
-                    ComponentLogger.error(effect, "Unknown color animation value: " + effect.getColorAnimation());
                 }
             }
         } else if (canUseAny) {

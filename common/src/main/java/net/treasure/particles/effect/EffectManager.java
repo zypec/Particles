@@ -3,6 +3,7 @@ package net.treasure.particles.effect;
 import com.jeff_media.armorequipevent.ArmorEquipEvent;
 import lombok.Getter;
 import net.treasure.particles.TreasureParticles;
+import net.treasure.particles.color.generator.Gradient;
 import net.treasure.particles.configuration.ConfigurationGenerator;
 import net.treasure.particles.configuration.DataHolder;
 import net.treasure.particles.constants.Patterns;
@@ -205,6 +206,7 @@ public class EffectManager implements DataHolder {
 
         var translations = TreasureParticles.getTranslations();
         var permissions = TreasureParticles.getPermissions();
+        var colorManager = TreasureParticles.getColorManager();
 
         for (var key : section.getKeys(false)) {
             try {
@@ -297,19 +299,29 @@ public class EffectManager implements DataHolder {
                     }
                 }
 
+                // Color animation warning
+                var colorAnimation = path.getString("color-animation");
+                if (colorAnimation != null && colorManager.getColorScheme(colorAnimation) == null) {
+                    try {
+                        Gradient.hex2Rgb(colorAnimation);
+                    } catch (Exception ignored) {
+                        ComponentLogger.error("[" + key + "]", "Unknown color animation value: " + colorAnimation);
+                    }
+                }
+
                 var effect = new Effect(
                         key,
                         displayName,
                         description != null ? description.toArray(String[]::new) : null,
                         icon,
-                        path.getString("color-animation"),
+                        colorAnimation,
                         permission,
                         path.getBoolean("name-color-animation", false),
                         path.getStringList("variables"),
                         interval,
                         path.getBoolean("enable-caching", false),
                         tickHandlers,
-                        TreasureParticles.getColorManager().getColorGroup(path.getString("color-group")),
+                        colorManager.getColorGroup(path.getString("color-group")),
                         path.getBoolean("only-elytra", false)
                 );
                 effect.configure();
