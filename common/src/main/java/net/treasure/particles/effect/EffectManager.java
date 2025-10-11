@@ -22,6 +22,7 @@ import net.treasure.particles.effect.script.basic.EmptyScript;
 import net.treasure.particles.effect.script.basic.ReturnScript;
 import net.treasure.particles.effect.script.basic.StopScript;
 import net.treasure.particles.effect.script.basic.reader.BasicScriptReader;
+import net.treasure.particles.effect.script.command.reader.CommandScriptReader;
 import net.treasure.particles.effect.script.conditional.reader.ConditionalScriptReader;
 import net.treasure.particles.effect.script.delay.reader.DelayReader;
 import net.treasure.particles.effect.script.message.ActionBar;
@@ -124,6 +125,9 @@ public class EffectManager implements DataHolder {
         registerReader(new FullSpiralParticleReader(), "full-spiral");
         //- Sphere
         registerReader(new SphereParticleReader(), "sphere");
+
+        // Command
+        registerReader(new CommandScriptReader(), "execute-command", "execute");
 
         // Messages
         registerReader(new BasicScriptReader<>(ChatMessage::new), "chat");
