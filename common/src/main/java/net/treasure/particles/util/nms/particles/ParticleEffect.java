@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.DoubleFunction;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -32,7 +32,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: ???</li>
      * </ul>
      */
-    PALE_OAK_LEAVES(version -> version < 21.4 ? "NONE" : "pale_oak_leaves"),
+    PALE_OAK_LEAVES(21, 4, "pale_oak_leaves"),
     /**
      * <p>
      * Falls off the bottom of any type leaves except pale oak leaves.
@@ -44,7 +44,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: ???</li>
      * </ul>
      */
-    TINTED_LEAVES(version -> version < 21.5 ? "NONE" : "tinted_leaves", CAN_BE_COLORED, PARAM_COLOR),
+    TINTED_LEAVES(21, 5, "tinted_leaves", CAN_BE_COLORED, PARAM_COLOR),
     /**
      * <p>
      * Floats throughout the atmosphere in the soul sand valley biome.
@@ -60,7 +60,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle gets a random velocity while falling down</li>
      * </ul>
      */
-    ASH(version -> "ash"),
+    ASH("ash"),
     /**
      * <b>REPLACED BY {@link #BLOCK_MARKER} SINCE 1.18</b>
      * <p>Appears when a player holds a barrier item in the main or offhand.</p>
@@ -70,7 +70,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    BARRIER(version -> version < 8 || version > 17 ? "NONE" : (version < 13 ? "BARRIER" : "barrier")),
+    BARRIER((major, minor) -> major > 17 ? "NONE" : "barrier"),
     /**
      * <p>
      * Produced when blocks are broken, flakes off blocks being brushed, produced when iron golem walk,
@@ -84,7 +84,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle needs a block texture in order to work</li>
      * </ul>
      */
-    BLOCK_CRACK(version -> "block", REQUIRES_BLOCK),
+    BLOCK_CRACK("block", REQUIRES_BLOCK),
     /**
      * <p>Unknown.</p>
      * <b>Information</b>
@@ -94,7 +94,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle needs a block texture in order to work</li>
      * </ul>
      */
-    BLOCK_CRUMBLE(version -> version < 21.2 ? "NONE" : "block_crumble", REQUIRES_BLOCK),
+    BLOCK_CRUMBLE(21, 2, "block_crumble", REQUIRES_BLOCK),
     /**
      * <p>
      * Marks the position of barriers and light blocks
@@ -107,7 +107,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle needs a block texture in order to work</li>
      * </ul>
      */
-    BLOCK_MARKER(version -> version < 18 ? "NONE" : "block_marker", REQUIRES_BLOCK),
+    BLOCK_MARKER(18, "block_marker", REQUIRES_BLOCK),
     /**
      * <p>
      * Appears around entities splashing in water, emitted by guardian lasers,
@@ -120,7 +120,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    BUBBLE(version -> "bubble", DIRECTIONAL),
+    BUBBLE("bubble", DIRECTIONAL),
     /**
      * <p>Represents upwards bubble columns.</p>
      * <b>Information</b>
@@ -134,7 +134,7 @@ public enum ParticleEffect {
      *     </li>
      * </ul>
      */
-    BUBBLE_COLUMN_UP(version -> "bubble_column_up", DIRECTIONAL),
+    BUBBLE_COLUMN_UP("bubble_column_up", DIRECTIONAL),
     /**
      * <p>Unused.</p>
      * <b>Information</b>
@@ -144,7 +144,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    BUBBLE_POP(version -> "bubble_pop", DIRECTIONAL),
+    BUBBLE_POP("bubble_pop", DIRECTIONAL),
     /**
      * <p>Floats off the top of campfires and soul campfires.</p>
      * <b>Information</b>
@@ -154,7 +154,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    CAMPFIRE_COSY_SMOKE(version -> "campfire_cosy_smoke", DIRECTIONAL),
+    CAMPFIRE_COSY_SMOKE("campfire_cosy_smoke", DIRECTIONAL),
     /**
      * <p>
      * Floats off the top of campfires and
@@ -167,7 +167,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    CAMPFIRE_SIGNAL_SMOKE(version -> "campfire_signal_smoke", DIRECTIONAL),
+    CAMPFIRE_SIGNAL_SMOKE("campfire_signal_smoke", DIRECTIONAL),
     /**
      * <p>Falls off the bottom of cherry leaves.</p>
      * <b>Information</b>
@@ -177,7 +177,7 @@ public enum ParticleEffect {
      *     <li>Extra: ???</li>
      * </ul>
      */
-    CHERRY_LEAVES(version -> version < 20 ? "NONE" : "cherry_leaves"),
+    CHERRY_LEAVES(20, "cherry_leaves"),
     /**
      * <p>
      * Appears when placing wet sponges in the Nether,
@@ -190,7 +190,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    CLOUD(version -> "cloud", DIRECTIONAL),
+    CLOUD("cloud", DIRECTIONAL),
     /**
      * <p>Produced when placing items in a composter.</p>
      * <b>Information</b>
@@ -199,7 +199,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    COMPOSTER(version -> "composter"),
+    COMPOSTER("composter"),
     /**
      * <p>Floats throughout the atmosphere in the crimson forest biome.</p>
      * <b>Information</b>
@@ -209,7 +209,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle gets a random velocity up</li>
      * </ul>
      */
-    CRIMSON_SPORE(version -> "crimson_spore"),
+    CRIMSON_SPORE("crimson_spore"),
     /**
      * <p>
      * Trails behind crossbow shots and fully charged bow shots,
@@ -221,7 +221,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Influences the velocity at which the particle flies off</li>
      * </ul>
      */
-    CRIT(version -> "crit", DIRECTIONAL),
+    CRIT("crit", DIRECTIONAL),
     /**
      * <p>
      * Appears when hitting entities with a sword or an axe
@@ -233,7 +233,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Influences the velocity at which the particle flies off</li>
      * </ul>
      */
-    CRIT_MAGIC(version -> "enchanted_hit", DIRECTIONAL),
+    CRIT_MAGIC("enchanted_hit", DIRECTIONAL),
     /**
      * <p>Represents downwards bubble columns.</p>
      * <b>Information</b>
@@ -242,7 +242,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    CURRENT_DOWN(version -> "current_down"),
+    CURRENT_DOWN("current_down"),
     /**
      * <p>Appears when a melee attack damages an entity.</p>
      * <b>Information</b>
@@ -252,7 +252,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    DAMAGE_INDICATOR(version -> "damage_indicator", DIRECTIONAL),
+    DAMAGE_INDICATOR("damage_indicator", DIRECTIONAL),
     /**
      * <p>Trails behind dolphins.</p>
      * <b>Information</b>
@@ -261,7 +261,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    DOLPHIN(version -> "dolphin"),
+    DOLPHIN("dolphin"),
     /**
      * <p>
      * Spit out by the ender dragon, trails behind dragon fireballs,
@@ -274,7 +274,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    DRAGON_BREATH(version -> "dragon_breath", DIRECTIONAL),
+    DRAGON_BREATH("dragon_breath", DIRECTIONAL),
     /**
      * <p>
      * Represents lava drips collected on pointed dripstone
@@ -286,7 +286,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    DRIPPING_DRIPSTONE_LAVA(version -> version < 17 ? "NONE" : "dripping_dripstone_lava"),
+    DRIPPING_DRIPSTONE_LAVA(17, "dripping_dripstone_lava"),
     /**
      * <p>
      * Represents water drips collected on pointed dripstone
@@ -298,7 +298,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    DRIPPING_DRIPSTONE_WATER(version -> version < 17 ? "NONE" : "dripping_dripstone_water"),
+    DRIPPING_DRIPSTONE_WATER(17, "dripping_dripstone_water"),
     /**
      * <p>
      * Represents honey drips collected on the bottom of full
@@ -311,7 +311,7 @@ public enum ParticleEffect {
      *     <li>Extra: Spawns a {@link #LANDING_HONEY} particle after landing on a block</li>
      * </ul>
      */
-    DRIPPING_HONEY(version -> "dripping_honey"),
+    DRIPPING_HONEY("dripping_honey"),
     /**
      * <p>
      * Represents tears collected on the sides or bottom of
@@ -324,7 +324,7 @@ public enum ParticleEffect {
      *     <li>Extra: Spawns a {@link #LANDING_OBSIDIAN_TEAR} particle after landing on a block</li>
      * </ul>
      */
-    DRIPPING_OBSIDIAN_TEAR(version -> "dripping_obsidian_tear"),
+    DRIPPING_OBSIDIAN_TEAR("dripping_obsidian_tear"),
     /**
      * <p>
      * Represents lava drips collected on the bottom of blocks
@@ -336,7 +336,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    DRIP_LAVA(version -> "dripping_lava"),
+    DRIP_LAVA("dripping_lava"),
     /**
      * <p>
      * Represents water drips collected on the bottom of leaves in rain and blocks
@@ -348,7 +348,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    DRIP_WATER(version -> "dripping_water"),
+    DRIP_WATER("dripping_water"),
     /**
      * <p>Emitted by activated sculk sensors.</p>
      * <b>Information</b>
@@ -358,7 +358,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle supports custom size with 2 colors, it will display a fade animation between the two colors</li>
      * </ul>
      */
-    DUST_COLOR_TRANSITION(version -> version < 17 ? "NONE" : "dust_color_transition", CAN_BE_COLORED, DUST, REQUIRES_COLOR),
+    DUST_COLOR_TRANSITION(17, "dust_color_transition", CAN_BE_COLORED, DUST, REQUIRES_COLOR),
     /**
      * <p>Produced by mace smash attacks.</p>
      * <b>Information</b>
@@ -368,7 +368,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle needs a block texture to work</li>
      * </ul>
      */
-    DUST_PILLAR(version -> version < 20.4 ? "NONE" : "dust_pillar", REQUIRES_BLOCK),
+    DUST_PILLAR(20, 4, "dust_pillar", REQUIRES_BLOCK),
     /**
      * <p>Shown when adding items to decorated pots.</p>
      * <b>Information</b>
@@ -377,7 +377,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Influences the velocity at which the particle flies off</li>
      * </ul>
      */
-    DUST_PLUME(version -> version < 20 ? "NONE" : "dust_plume"),
+    DUST_PLUME(20, "dust_plume"),
     /**
      * <p>
      * Appears when sniffer eggs are placed on moss blocks,
@@ -389,7 +389,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    EGG_CRACK(version -> version < 20 ? "NONE" : "egg_crack"),
+    EGG_CRACK(20, "egg_crack"),
     /**
      * <p>Emitted by lightning rods during thunderstorms, produced when lightning hits copper.</p>
      * <b>Information</b>
@@ -399,7 +399,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set</li>
      * </ul>
      */
-    ELECTRIC_SPARK(version -> version < 17 ? "NONE" : "electric_spark", DIRECTIONAL),
+    ELECTRIC_SPARK(17, "electric_spark", DIRECTIONAL),
     /**
      * <p>Floats from bookshelves to enchanting tables.</p>
      * <b>Information</b>
@@ -409,7 +409,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    ENCHANTMENT_TABLE(version -> "enchant", DIRECTIONAL),
+    ENCHANTMENT_TABLE("enchant", DIRECTIONAL),
     /**
      * <p>Emitted by end rods, trails behind shulker bullets.</p>
      * <b>Information</b>
@@ -419,7 +419,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    END_ROD(version -> "end_rod", DIRECTIONAL),
+    END_ROD("end_rod", DIRECTIONAL),
     /**
      * <p>Produced by explosions.</p>
      * <b>Information</b>
@@ -428,7 +428,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    EXPLOSION_HUGE(version -> "explosion_emitter"),
+    EXPLOSION_HUGE("explosion_emitter"),
     /**
      * <p>
      * Produced by explosion_emitter particles, shown when shearing mushrooms,
@@ -441,7 +441,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    EXPLOSION_LARGE(version -> "explosion"),
+    EXPLOSION_LARGE("explosion"),
     /**
      * <p>
      * Appears when mobs die, shown when ravagers roar after being stunned,
@@ -454,7 +454,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Influences the velocity at which the particle flies off</li>
      * </ul>
      */
-    EXPLOSION_NORMAL(version -> "poof", DIRECTIONAL),
+    EXPLOSION_NORMAL("poof", DIRECTIONAL),
     /**
      * <p>Drips off pointed dripstone with lava above.</p>
      * <b>Information</b>
@@ -463,7 +463,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    FALLING_DRIPSTONE_LAVA(version -> version < 17 ? "NONE" : "falling_dripstone_lava"),
+    FALLING_DRIPSTONE_LAVA(17, "falling_dripstone_lava"),
     /**
      * <p>Drips off pointed dripstone with nothing or water above.</p>
      * <b>Information</b>
@@ -472,7 +472,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    FALLING_DRIPSTONE_WATER(version -> version < 17 ? "NONE" : "falling_dripstone_water"),
+    FALLING_DRIPSTONE_WATER(17, "falling_dripstone_water"),
     /**
      * <p>Falls off the bottom of floating blocks affected by gravity.</p>
      * <b>Information</b>
@@ -482,7 +482,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle needs a block texture in order to work</li>
      * </ul>
      */
-    FALLING_DUST(version -> "falling_dust", REQUIRES_BLOCK),
+    FALLING_DUST("falling_dust", REQUIRES_BLOCK),
     /**
      * <p>Drips off beehives and bee nests that are full of honey.</p>
      * <b>Information</b>
@@ -491,7 +491,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    FALLING_HONEY(version -> "falling_honey"),
+    FALLING_HONEY("falling_honey"),
     /**
      * <p>Drips off the bottom of blocks with lava above.</p>
      * <b>Information</b>
@@ -500,7 +500,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    FALLING_LAVA(version -> "falling_lava"),
+    FALLING_LAVA("falling_lava"),
     /**
      * <p>Falls off bees that have collected pollen.</p>
      * <b>Information</b>
@@ -509,7 +509,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    FALLING_NECTAR(version -> "falling_nectar"),
+    FALLING_NECTAR("falling_nectar"),
     /**
      * <p>Drips off crying obsidian.</p>
      * <b>Information</b>
@@ -518,7 +518,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    FALLING_OBSIDIAN_TEAR(version -> "falling_obsidian_tear"),
+    FALLING_OBSIDIAN_TEAR("falling_obsidian_tear"),
     /**
      * <p>Drips off of spore blossoms.</p>
      * <b>Information</b>
@@ -527,7 +527,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    FALLING_SPORE_BLOSSOM(version -> version < 17 ? "NONE" : "falling_spore_blossom"),
+    FALLING_SPORE_BLOSSOM(17, "falling_spore_blossom"),
     /**
      * <p>
      * Drips off of the bottom of blocks with water above,
@@ -539,7 +539,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    FALLING_WATER(version -> version < 17 ? "NONE" : "falling_water"),
+    FALLING_WATER(17, "falling_water"),
     /**
      * <p>
      * Trails behind fireworks, produced when fireworks
@@ -551,7 +551,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Influences the velocity at which the particle flies off</li>
      * </ul>
      */
-    FIREWORKS_SPARK(version -> "firework", DIRECTIONAL),
+    FIREWORKS_SPARK("firework", DIRECTIONAL),
     /**
      * <p>
      * Appears inside of monster spawners, produced by magma cubes,
@@ -564,7 +564,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    FLAME(version -> "flame", DIRECTIONAL),
+    FLAME("flame", DIRECTIONAL),
     /**
      * <p>Shown when fireworks with crafted with firework stars explode.</p>
      * <b>Information</b>
@@ -574,7 +574,7 @@ public enum ParticleEffect {
      *     <li>Extra: The color of this flash can't be set since it's only set clientside</li>
      * </ul>
      */
-    FLASH(version -> "flash"),
+    FLASH("flash", PARAM_COLOR, CAN_BE_COLORED),
     /**
      * <p>Emitted by glow squid.</p>
      * <b>Information</b>
@@ -589,7 +589,7 @@ public enum ParticleEffect {
      *     </li>
      * </ul>
      */
-    GLOW(version -> version < 17 ? "NONE" : "glow", DIRECTIONAL),
+    GLOW(17, "glow", DIRECTIONAL),
     /**
      * <p>Produced by glow squid when hit.</p>
      * <b>Information</b>
@@ -599,7 +599,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    GLOW_SQUID_INK(version -> version < 17 ? "NONE" : "glow_squid_ink", DIRECTIONAL),
+    GLOW_SQUID_INK(17, "glow_squid_ink", DIRECTIONAL),
     /**
      * <p>Created when a wind charge hits a block.</p>
      * <b>Information</b>
@@ -609,11 +609,11 @@ public enum ParticleEffect {
      *     <li>Extra: ???</li>
      * </ul>
      */
-    GUST(version -> version < 20 ? "NONE" : "gust"),
+    GUST(20, "gust"),
     /**
      * Unknown
      */
-    GUST_DUST(version -> version < 20 ? "NONE" : "gust_dust"),
+    GUST_DUST(20, "gust_dust"),
     /**
      * <p>Created when a wind charge hits a block.</p>
      * <b>Information</b>
@@ -623,7 +623,7 @@ public enum ParticleEffect {
      *     <li>Extra: ???</li>
      * </ul>
      */
-    GUST_EMITTER(version -> version < 20 ? "NONE" : "gust_emitter"),
+    GUST_EMITTER(20, "gust_emitter"),
     /**
      * <p>
      * Appears when taming mobs, emitted by breeding mobs,
@@ -635,7 +635,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    HEART(version -> "heart"),
+    HEART("heart"),
     /**
      * <p>Produced by entities with the Infested effect.</p>
      * <b>Information</b>
@@ -645,7 +645,7 @@ public enum ParticleEffect {
      *     <li>Extra: ???</li>
      * </ul>
      */
-    INFESTED(version -> version < 20.5 ? "NONE" : "infested"),
+    INFESTED(20, 5, "infested"),
     /**
      * <p>Produced by entities with the Weaving effect.</p>
      * <b>Information</b>
@@ -655,7 +655,7 @@ public enum ParticleEffect {
      *     <li>Extra: ???</li>
      * </ul>
      */
-    ITEM_COBWEB(version -> version < 20.5 ? "NONE" : "item_cobweb"),
+    ITEM_COBWEB(20, 5, "item_cobweb"),
     /**
      * <p>
      * Produced when tools break, produced when eating food,
@@ -673,7 +673,7 @@ public enum ParticleEffect {
      *     </li>
      * </ul>
      */
-    ITEM_CRACK(version -> "item", DIRECTIONAL, REQUIRES_ITEM),
+    ITEM_CRACK("item", DIRECTIONAL, REQUIRES_ITEM),
     /**
      * <p>Created when {@link #FALLING_HONEY} particles hit the ground.</p>
      * <p>
@@ -684,7 +684,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle stays on the ground and doesn't instantly de-spawn</li>
      * </ul>
      */
-    LANDING_HONEY(version -> "landing_honey"),
+    LANDING_HONEY("landing_honey"),
     /**
      * <p>Created when {@link #FALLING_LAVA} or {@link #FALLING_DRIPSTONE_LAVA} particles hit the ground.</p>
      * <b>Information</b>
@@ -694,7 +694,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle stays on the ground and doesn't instantly de-spawn</li>
      * </ul>
      */
-    LANDING_LAVA(version -> "landing_lava"),
+    LANDING_LAVA("landing_lava"),
     /**
      * <p>Created when {@link #FALLING_OBSIDIAN_TEAR} particles hit the ground.</p>
      * <b>Information</b>
@@ -704,7 +704,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle stays on the ground and doesn't instantly de-spawn</li>
      * </ul>
      */
-    LANDING_OBSIDIAN_TEAR(version -> "landing_obsidian_tear"),
+    LANDING_OBSIDIAN_TEAR("landing_obsidian_tear"),
     /**
      * <p>Produced by campfires, produced by lava.</p>
      * <b>Information</b>
@@ -713,7 +713,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    LAVA(version -> "lava"),
+    LAVA("lava"),
     /**
      * <b>REPLACED BY {@link #BLOCK_MARKER} SINCE 1.18</b>
      * <p>In vanilla, this particle is displayed by the light block.</p>
@@ -728,7 +728,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    LIGHT(version -> version != 17 ? "NONE" : "light"),
+    LIGHT((major, minor) -> major == 17 ? "light" : "NONE"),
     /**
      * <p>Displayed when elder guardians inflict Mining Fatigue.</p>
      * <b>Information</b>
@@ -737,7 +737,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    MOB_APPEARANCE(version -> "elder_guardian"),
+    MOB_APPEARANCE("elder_guardian"),
     /**
      * <p>Appears and floats toward conduits, appears and floats towards mobs being attacked by a conduit.</p>
      * <b>Information</b>
@@ -747,7 +747,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    NAUTILUS(version -> "nautilus", DIRECTIONAL),
+    NAUTILUS("nautilus", DIRECTIONAL),
     /**
      * <p>Produced by jukeboxes and note blocks.</p>
      * <b>Information</b>
@@ -757,7 +757,7 @@ public enum ParticleEffect {
      *     <li>Extra: The offsetX parameter represents which note should be displayed, the amount has to be 0 or the color won't work</li>
      * </ul>
      */
-    NOTE(version -> "note", OFFSET_COLOR, CAN_BE_COLORED),
+    NOTE("note", OFFSET_COLOR, CAN_BE_COLORED),
     /**
      * <p>
      * Appears when an ominous item spawner
@@ -770,7 +770,7 @@ public enum ParticleEffect {
      *     <li>Extra: ???</li>
      * </ul>
      */
-    OMINOUS_SPAWNING(version -> version < 20.5 ? "NONE" : "ominous_spawning"),
+    OMINOUS_SPAWNING(20, 5, "ominous_spawning"),
     /**
      * <p>
      * Trails behind eyes of ender, shown when eyes of ender break,
@@ -786,7 +786,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    PORTAL(version -> "portal", DIRECTIONAL),
+    PORTAL("portal", DIRECTIONAL),
     /**
      * <p>Produced by players and mobs with the Raid Omen effect.</p>
      * <b>Information</b>
@@ -796,7 +796,7 @@ public enum ParticleEffect {
      *     <li>Extra: ???</li>
      * </ul>
      */
-    RAID_OMEN(version -> version < 20.5 ? "NONE" : "raid_omen"),
+    RAID_OMEN(20, 5, "raid_omen"),
     /**
      * <p>
      * Emitted by powered redstone torches, powered levers,
@@ -809,7 +809,7 @@ public enum ParticleEffect {
      *     <li>Extra: offsetX, offsetY and offsetZ represent the rgb values of the particle, the amount has to be 0 or the color won't work</li>
      * </ul>
      */
-    REDSTONE(version -> "dust", CAN_BE_COLORED, DUST, REQUIRES_COLOR),
+    REDSTONE("dust", CAN_BE_COLORED, DUST, REQUIRES_COLOR),
     /**
      * <p>Floats off the top of respawn anchors.</p>
      * <b>Information</b>
@@ -819,7 +819,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    REVERSE_PORTAL(version -> "reverse_portal", DIRECTIONAL),
+    REVERSE_PORTAL("reverse_portal", DIRECTIONAL),
     /**
      * <p>Shown when scraping oxidization off copper.</p>
      * <b>Information</b>
@@ -829,7 +829,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    SCRAPE(version -> version < 17 ? "NONE" : "scrape", DIRECTIONAL),
+    SCRAPE(17, "scrape", DIRECTIONAL),
     /**
      * <p>Marks the path of a sculk charge.</p>
      * <b>Information</b>
@@ -844,7 +844,7 @@ public enum ParticleEffect {
      *     </li>
      * </ul>
      */
-    SCULK_CHARGE(version -> version < 19 ? "NONE" : "sculk_charge", DIRECTIONAL),
+    SCULK_CHARGE(19, "sculk_charge", DIRECTIONAL),
     /**
      * <p>Appears when a sculk charge ends.</p>
      * <b>Information</b>
@@ -854,7 +854,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    SCULK_CHARGE_POP(version -> version < 19 ? "NONE" : "sculk_charge_pop", DIRECTIONAL),
+    SCULK_CHARGE_POP(19, "sculk_charge_pop", DIRECTIONAL),
     /**
      * <p>Appears above sculk catalysts when activated.</p>
      * <b>Information</b>
@@ -864,7 +864,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    SCULK_SOUL(version -> version < 19 ? "NONE" : "sculk_soul", DIRECTIONAL),
+    SCULK_SOUL(19, "sculk_soul", DIRECTIONAL),
     /**
      * <p>Emitted by activated sculk shriekers.</p>
      * <b>Information</b>
@@ -874,7 +874,7 @@ public enum ParticleEffect {
      *     <li>Extra: You can set the delay before the particle appears</li>
      * </ul>
      */
-    SHRIEK(version -> version < 19 ? "NONE" : "shriek"),
+    SHRIEK(19, "shriek"),
     /**
      * <p>Shown when slimes jump.</p>
      * <b>Information</b>
@@ -883,7 +883,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    SLIME(version -> "item_slime"),
+    SLIME("item_slime"),
     /**
      * <p>Represents the flame of candles.</p>
      * <b>Information</b>
@@ -893,7 +893,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    SMALL_FLAME(version -> version < 17 ? "NONE" : "small_flame", DIRECTIONAL),
+    SMALL_FLAME(17, "small_flame", DIRECTIONAL),
     /**
      * <p>Produced by mobs with the Wind Charged effect.</p>
      * <b>Information</b>
@@ -903,7 +903,7 @@ public enum ParticleEffect {
      *     <li>Extra: ???</li>
      * </ul>
      */
-    SMALL_GUST(version -> version < 20.5 ? "NONE" : "small_gust"),
+    SMALL_GUST(20, 5, "small_gust"),
     /**
      * <p>
      * Floats off the top of fire, produced by blazes,
@@ -916,7 +916,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Influences the velocity at which the particle flies off</li>
      * </ul>
      */
-    SMOKE_LARGE(version -> "large_smoke", DIRECTIONAL),
+    SMOKE_LARGE("large_smoke", DIRECTIONAL),
     /**
      * <p>
      * Floats off the top of monster spawners, represents the smoke from candles,
@@ -934,7 +934,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Influences the velocity at which the particle flies off</li>
      * </ul>
      */
-    SMOKE_NORMAL(version -> "smoke", DIRECTIONAL),
+    SMOKE_NORMAL("smoke", DIRECTIONAL),
     /**
      * <p>Sneezed out by pandas.</p>
      * <b>Information</b>
@@ -944,7 +944,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    SNEEZE(version -> "sneeze", DIRECTIONAL),
+    SNEEZE("sneeze", DIRECTIONAL),
     /**
      * <p>Produced when thrown snowballs break.</p>
      * <b>Information</b>
@@ -953,7 +953,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    SNOWBALL(version -> "item_snowball"),
+    SNOWBALL("item_snowball"),
     /**
      * <p>Created by entities in powder snow.</p>
      * <b>Information</b>
@@ -963,7 +963,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    SNOWFLAKE(version -> version < 17 ? "NONE" : "snowflake", DIRECTIONAL),
+    SNOWFLAKE(17, "snowflake", DIRECTIONAL),
     /**
      * <p>Produced by the warden during its sonic boom attack.</p>
      * <b>Information</b>
@@ -972,7 +972,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    SONIC_BOOM(version -> version < 19 ? "NONE" : "sonic_boom"),
+    SONIC_BOOM(19, "sonic_boom"),
     /**
      * <p>
      * Created by players with Soul Speed boots
@@ -985,7 +985,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    SOUL(version -> "soul", DIRECTIONAL),
+    SOUL("soul", DIRECTIONAL),
     /**
      * <p>Represents the flame of soul torches.</p>
      * <b>Information</b>
@@ -995,7 +995,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    SOUL_FIRE_FLAME(version -> "soul_fire_flame", DIRECTIONAL),
+    SOUL_FIRE_FLAME("soul_fire_flame", DIRECTIONAL),
     /**
      * <p>Produced by splash potions.</p>
      * <b>Information</b>
@@ -1005,7 +1005,7 @@ public enum ParticleEffect {
      *     <li>Extra: Only the motion on the y-axis can be controlled, the motion on the x- and z-axis are multiplied by 0.1 when setting the values to 0</li>
      * </ul>
      */
-    SPELL(version -> "effect"),
+    SPELL("effect"),
     /**
      * <p>
      * Produced when splash potions or lingering potions
@@ -1018,7 +1018,7 @@ public enum ParticleEffect {
      *     <li>Extra: Only the motion on the y-axis can be controlled, the motion on the x- and z-axis are multiplied by 0.1 when setting the values to 0</li>
      * </ul>
      */
-    SPELL_INSTANT(version -> "instant_effect"),
+    SPELL_INSTANT("instant_effect"),
     /**
      * <p>
      * Emitted by tipped arrows, produced by ravagers when stunned,
@@ -1033,7 +1033,7 @@ public enum ParticleEffect {
      *     <li>Extra: offsetX, offsetY and offsetZ represent the RGB values of the particle, the amount has to be 0 or the color won't work</li>
      * </ul>
      */
-    SPELL_MOB(version -> "entity_effect", OFFSET_COLOR, CAN_BE_COLORED),
+    SPELL_MOB("entity_effect", OFFSET_COLOR, CAN_BE_COLORED),
     /**
      * <p>Emitted by entities with effects from a beacon or a conduit.</p>
      * <b>Information</b>
@@ -1043,7 +1043,7 @@ public enum ParticleEffect {
      *     <li>Extra: offsetX, offsetY and offsetZ represent the RGB values of the particle, the amount has to be 0 or the color won't work</li>
      * </ul>
      */
-    SPELL_MOB_AMBIENT(version -> "ambient_entity_effect", OFFSET_COLOR, CAN_BE_COLORED),
+    SPELL_MOB_AMBIENT("ambient_entity_effect", OFFSET_COLOR, CAN_BE_COLORED),
     /**
      * <p>Emitted by witches.</p>
      * <b>Information</b>
@@ -1053,7 +1053,7 @@ public enum ParticleEffect {
      *     <li>Extra: Only the motion on the y-axis can be controlled, the motion on the x-axis and z-axis are multiplied by 0.1 when setting the values to 0</li>
      * </ul>
      */
-    SPELL_WITCH(version -> "witch"),
+    SPELL_WITCH("witch"),
     /**
      * <p>Spit out by llamas.</p>
      * <b>Information</b>
@@ -1063,7 +1063,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    SPIT(version -> "spit"),
+    SPIT("spit"),
     /**
      * <p>Floats in the atmosphere around spore blossoms.</p>
      * <b>Information</b>
@@ -1072,7 +1072,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    SPORE_BLOSSOM_AIR(version -> version < 17 ? "NONE" : "spore_blossom_air"),
+    SPORE_BLOSSOM_AIR(17, "spore_blossom_air"),
     /**
      * <p>Produced by squid when hit.</p>
      * <b>Information</b>
@@ -1082,7 +1082,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    SQUID_INK(version -> "squid_ink", DIRECTIONAL),
+    SQUID_INK("squid_ink", DIRECTIONAL),
     /**
      * <p>Floats in the atmosphere underwater.</p>
      * <b>Information</b>
@@ -1091,7 +1091,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    SUSPENDED(version -> "underwater"),
+    SUSPENDED("underwater"),
     /**
      * <p>Appears when a sweeping attack is performed.</p>
      * <b>Information</b>
@@ -1101,7 +1101,7 @@ public enum ParticleEffect {
      *     <li>Extra: The size of this particle can be set in the offsetX parameter, the amount has to be 0 and the speed has to be 1</li>
      * </ul>
      */
-    SWEEP_ATTACK(version -> "sweep_attack"),
+    SWEEP_ATTACK("sweep_attack"),
     /**
      * <p>Produced when a totem of undying is used.</p>
      * <b>Information</b>
@@ -1111,7 +1111,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    TOTEM(version -> "totem_of_undying", DIRECTIONAL),
+    TOTEM("totem_of_undying", DIRECTIONAL),
     /**
      * <p>Appears above mycelium, trails behind the wings of phantoms.</p>
      * <b>Information</b>
@@ -1121,7 +1121,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    TOWN_AURA(version -> "mycelium", DIRECTIONAL),
+    TOWN_AURA("mycelium", DIRECTIONAL),
     /**
      * <p>Unknown.</p>
      * <b>Information</b>
@@ -1131,7 +1131,7 @@ public enum ParticleEffect {
      *     <li>Extra: ???</li>
      * </ul>
      */
-    TRAIL(version -> version < 21.2 ? "NONE" : "trail", CAN_BE_COLORED, REQUIRES_COLOR, REQUIRES_TARGET),
+    TRAIL(21, 2, "trail", CAN_BE_COLORED, REQUIRES_COLOR, REQUIRES_TARGET),
     /**
      * <p>Produced by players and mobs with the Trial Omen effect.</p>
      * <b>Information</b>
@@ -1141,7 +1141,7 @@ public enum ParticleEffect {
      *     <li>Extra: ???</li>
      * </ul>
      */
-    TRIAL_OMEN(version -> version < 20.5 ? "NONE" : "trial_omen"),
+    TRIAL_OMEN(20, 5, "trial_omen"),
     /**
      * <p>Produced when a Trial Spawner is activated.</p>
      * <b>Information</b>
@@ -1150,7 +1150,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: ???</li>
      * </ul>
      */
-    TRIAL_SPAWNER_DETECTION(version -> version < 20 ? "NONE" : "trial_spawner_detection"),
+    TRIAL_SPAWNER_DETECTION(20, "trial_spawner_detection"),
     /**
      * <p>Produced when an Ominous Trial Spawner is activated.</p>
      * <b>Information</b>
@@ -1160,7 +1160,7 @@ public enum ParticleEffect {
      *     <li>Extra: ???</li>
      * </ul>
      */
-    TRIAL_SPAWNER_DETECTION_OMINOUS(version -> version < 20.5 ? "NONE" : "trial_spawner_detection_ominous"),
+    TRIAL_SPAWNER_DETECTION_OMINOUS(20, 5, "trial_spawner_detection_ominous"),
     /**
      * <p>Produced when a player is near a vault.</p>
      * <b>Information</b>
@@ -1170,7 +1170,7 @@ public enum ParticleEffect {
      *     <li>Extra: ???</li>
      * </ul>
      */
-    VAULT_CONNECTION(version -> version < 20.5 ? "NONE" : "vault_connection"),
+    VAULT_CONNECTION(20, 5, "vault_connection"),
     /**
      * <p>
      * Moves from sounds to the warden or a sculk sensor,
@@ -1183,7 +1183,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle needs a target location and duration value in order to work</li>
      * </ul>
      */
-    VIBRATION(version -> version < 19 ? "NONE" : "vibration", REQUIRES_TARGET),
+    VIBRATION(19, "vibration", REQUIRES_TARGET),
     /**
      * <p>Produced when hitting villagers or when villagers fail to breed.</p>
      * <b>Information</b>
@@ -1192,7 +1192,7 @@ public enum ParticleEffect {
      * <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    VILLAGER_ANGRY(version -> "angry_villager"),
+    VILLAGER_ANGRY("angry_villager"),
     /**
      * <p>
      * Shown when using bone meal on plants, appears when trading with villagers,
@@ -1206,7 +1206,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    VILLAGER_HAPPY(version -> "happy_villager", DIRECTIONAL),
+    VILLAGER_HAPPY("happy_villager", DIRECTIONAL),
     /**
      * <p>Floats in the atmosphere in warped forest biomes.</p>
      * <b>Information</b>
@@ -1216,7 +1216,7 @@ public enum ParticleEffect {
      *     <li>Extra: This particle gets a random velocity up</li>
      * </ul>
      */
-    WARPED_SPORE(version -> "warped_spore"),
+    WARPED_SPORE("warped_spore"),
     /**
      * <p>
      * Produced by entities splashing in water, produced by villagers
@@ -1230,7 +1230,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Influences the velocity at which the particle flies off</li>
      * </ul>
      */
-    WATER_SPLASH(version -> "splash", DIRECTIONAL),
+    WATER_SPLASH("splash", DIRECTIONAL),
     /**
      * <p>Represents the fish trail when fishing.</p>
      * <b>Information</b>
@@ -1239,7 +1239,7 @@ public enum ParticleEffect {
      *     <li>Speed Value: Doesn't influence the particle</li>
      * </ul>
      */
-    WATER_WAKE(version -> "fishing", DIRECTIONAL),
+    WATER_WAKE("fishing", DIRECTIONAL),
     /**
      * <p>Produced when scraping wax off copper.</p>
      * <b>Information</b>
@@ -1249,7 +1249,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    WAX_OFF(version -> version < 17 ? "NONE" : "wax_off", DIRECTIONAL),
+    WAX_OFF(17, "wax_off", DIRECTIONAL),
     /**
      * <p>Produced when using honeycomb on copper.</p>
      * <b>Information</b>
@@ -1259,7 +1259,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    WAX_ON(version -> version < 17 ? "NONE" : "wax_on", DIRECTIONAL),
+    WAX_ON(17, "wax_on", DIRECTIONAL),
     /**
      * <p>
      * Floats in the atmosphere in basalt delta biomes.
@@ -1275,11 +1275,11 @@ public enum ParticleEffect {
      *     <li>Extra: This particle gets a random velocity in the -x and -z direction while falling down</li>
      * </ul>
      */
-    WHITE_ASH(version -> "white_ash"),
+    WHITE_ASH("white_ash"),
     /**
      * Unknown
      */
-    WHITE_SMOKE(version -> version < 20 ? "NONE" : "white_smoke");
+    WHITE_SMOKE(20, "white_smoke");
 
     public static final List<ParticleEffect> VALUES = List.of(values());
     public static final Map<String, ParticleEffect> MINECRAFT_KEYS;
@@ -1305,12 +1305,30 @@ public enum ParticleEffect {
         return VALUES.stream().filter(effect -> effect.hasProperty(property)).toList();
     }
 
-    private final DoubleFunction<String> fieldNameMapper;
+    @Getter
+    private final String fieldName, latestFieldName;
     private final List<Property> properties;
     private Particle particle;
 
-    ParticleEffect(DoubleFunction<String> fieldNameMapper, Property... properties) {
-        this.fieldNameMapper = fieldNameMapper;
+    ParticleEffect(BiFunction<Integer, Integer, String> fieldNameMapper, Property... properties) {
+        this.fieldName = fieldNameMapper.apply(ReflectionUtils.MAJOR_MINECRAFT_VERSION, ReflectionUtils.MINOR_MINECRAFT_VERSION);
+        this.latestFieldName = fieldNameMapper.apply(ReflectionUtils.LATEST_MAJOR_VERSION, ReflectionUtils.LATEST_MINOR_VERSION);
+        this.properties = List.of(properties);
+    }
+
+    ParticleEffect(String fieldName, Property... properties) {
+        this.fieldName = fieldName;
+        this.latestFieldName = fieldName;
+        this.properties = List.of(properties);
+    }
+
+    ParticleEffect(int majorRequired, String fieldName, Property... properties) {
+        this(majorRequired, 0, fieldName, properties);
+    }
+
+    ParticleEffect(int majorRequired, int minorRequired, String fieldName, Property... properties) {
+        this.fieldName = checkVersion(majorRequired, minorRequired) ? fieldName : "NONE";
+        this.latestFieldName = fieldName;
         this.properties = List.of(properties);
     }
 
@@ -1318,21 +1336,17 @@ public enum ParticleEffect {
         return property != null && properties.contains(property);
     }
 
-    public String getFieldName() {
-        return fieldNameMapper.apply(ReflectionUtils.MINECRAFT_VERSION);
-    }
-
-    public String getLatestFieldName() {
-        return fieldNameMapper.apply(ReflectionUtils.LATEST_SUPPORTED_VERSION);
-    }
-
     public Particle bukkit() {
         if (this.particle != null) return particle;
         try {
-            return particle = Particle.valueOf(ReflectionUtils.MINECRAFT_VERSION >= 20.5 ? getFieldName().toUpperCase(Locale.ENGLISH) : name());
+            return particle = Particle.valueOf(checkVersion(20, 5) ? getFieldName().toUpperCase(Locale.ENGLISH) : name());
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private static boolean checkVersion(int major, int minor) {
+        return ReflectionUtils.MAJOR_MINECRAFT_VERSION >= major && (ReflectionUtils.MAJOR_MINECRAFT_VERSION > major || ReflectionUtils.MINOR_MINECRAFT_VERSION >= minor);
     }
 
     public enum Property {
