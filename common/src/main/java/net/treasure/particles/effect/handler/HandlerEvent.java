@@ -20,6 +20,8 @@ public enum HandlerEvent {
 
     PROJECTILE("projectile"),
 
+    PROJECTILE_HIT("projectile-hit"),
+
     MOB_KILL("mob-kill"),
 
     MOB_DAMAGE("mob-damage"),

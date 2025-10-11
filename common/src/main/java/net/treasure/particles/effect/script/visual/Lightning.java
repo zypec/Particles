@@ -38,7 +38,7 @@ public class Lightning extends Script {
                 yield null;
             }
             case ELYTRA, STANDING, MOVING, SNEAKING, TAKE_DAMAGE -> player;
-            case MOB_KILL, PLAYER_KILL, PROJECTILE, MOB_DAMAGE, PLAYER_DAMAGE, RIDE_VEHICLE ->
+            case MOB_KILL, PLAYER_KILL, PROJECTILE, PROJECTILE_HIT, MOB_DAMAGE, PLAYER_DAMAGE, RIDE_VEHICLE ->
                     data instanceof PlayerEffectData playerEffectData ? playerEffectData.getTargetEntity() : null;
         };
         if (entity == null && origin == null) return null;

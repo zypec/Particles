@@ -67,7 +67,7 @@ public class ParticleSpawner extends Script {
                 yield null;
             }
             case ELYTRA, STANDING, MOVING, SNEAKING, TAKE_DAMAGE -> player;
-            case MOB_KILL, PLAYER_KILL, PROJECTILE, MOB_DAMAGE, PLAYER_DAMAGE, RIDE_VEHICLE -> {
+            case MOB_KILL, PLAYER_KILL, PROJECTILE, PROJECTILE_HIT, MOB_DAMAGE, PLAYER_DAMAGE, RIDE_VEHICLE -> {
                 if (!(data instanceof PlayerEffectData playerEffectData)) yield null;
                 if (spawnEffectOnPlayer) yield player;
                 if (entityTypeFilter != null && (playerEffectData.getTargetEntity() == null || entityTypeFilter != playerEffectData.getTargetEntity().getType()))

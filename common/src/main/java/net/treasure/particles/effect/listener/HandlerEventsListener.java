@@ -144,7 +144,6 @@ public class HandlerEventsListener implements Listener {
         if (player.getGameMode() != GameMode.CREATIVE && event.getEntity() instanceof Trident) {
             var trident = player.getInventory().getItemInMainHand().getType() == Material.TRIDENT ? player.getInventory().getItemInMainHand() : player.getInventory().getItemInOffHand();
             if (trident.getItemMeta() == null || !trident.getItemMeta().hasEnchant(Enchantment.LOYALTY)) return;
-            player.setMetadata(Keys.NAMESPACE, new FixedMetadataValue(TreasureParticles.getPlugin(), true));
             event.getEntity().setMetadata(Keys.NAMESPACE, new FixedMetadataValue(TreasureParticles.getPlugin(), true));
         }
     }
@@ -152,11 +151,28 @@ public class HandlerEventsListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void on(ProjectileHitEvent event) {
         if (!event.getEntity().hasMetadata(Keys.NAMESPACE)) return;
+
+        boolean resetEffect = true;
+        PlayerEffectData data = null;
+        try {
+            data = (PlayerEffectData) event.getEntity().getMetadata(Keys.NAMESPACE).get(0).value();
+            if (data != null) {
+                var effect = data.getCurrentEffect();
+                if (effect != null && effect.getEvents().contains(HandlerEvent.PROJECTILE_HIT)) {
+                    data.setCurrentEvent(HandlerEvent.PROJECTILE_HIT);
+                    data.setTargetEntity(event.getEntity());
+                    resetEffect = false;
+                }
+            }
+        } catch (Exception ignored) {
+        }
+
+        // Don't reset the effect if the trident is enchanted with Loyalty
         if (event.getEntity() instanceof Trident trident && trident.getMetadata(Keys.NAMESPACE).size() == 2)
             return;
+
         try {
-            var data = (PlayerEffectData) event.getEntity().getMetadata(Keys.NAMESPACE).get(0).value();
-            if (data != null && event.getEntity().equals(data.getTargetEntity()))
+            if (data != null && event.getEntity().equals(data.getTargetEntity()) && resetEffect)
                 data.resetEvent();
         } catch (Exception ignored) {
         }
