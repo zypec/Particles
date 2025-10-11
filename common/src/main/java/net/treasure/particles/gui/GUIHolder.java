@@ -23,6 +23,7 @@ import java.util.function.Consumer;
 @Getter
 @Setter
 public class GUIHolder implements InventoryHolder {
+
     private Inventory inventory;
     private int page;
     private HashMap<Integer, SlotData> slotData;

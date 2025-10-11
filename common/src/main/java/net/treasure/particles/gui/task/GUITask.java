@@ -1,6 +1,5 @@
 package net.treasure.particles.gui.task;
 
-import lombok.Getter;
 import net.kyori.adventure.text.format.TextColor;
 import net.treasure.particles.gui.GUIHolder;
 import net.treasure.particles.util.item.CustomItem;
@@ -12,12 +11,15 @@ import java.util.Set;
 
 public class GUITask implements Runnable {
 
-    @Getter
-    private static final Set<Player> players = new HashSet<>();
+    private static final Set<Player> PLAYERS = new HashSet<>();
+
+    public static Set<Player> getPlayers() {
+        return PLAYERS;
+    }
 
     @Override
     public void run() {
-        var iterator = players.iterator();
+        var iterator = PLAYERS.iterator();
         while (iterator.hasNext()) {
             var player = iterator.next();
             if (player == null || !player.isOnline()) {

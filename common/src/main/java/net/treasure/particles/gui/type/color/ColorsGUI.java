@@ -141,7 +141,7 @@ public class ColorsGUI extends GUI {
                 }
 
                 GUISounds.play(player, sound);
-            });
+            }, colorData, null);
             index += 1;
         }
 

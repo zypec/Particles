@@ -93,8 +93,8 @@ public class MixerGUI extends GUI {
                 .stream()
                 .filter(effect ->
                         (filter == null || effect.getEvents().contains(filter)) &&
-                                effect.canUse(player) &&
-                                !effect.mixerCompatibleTickHandlersGUI(holder).isEmpty()
+                        effect.canUse(player) &&
+                        !effect.mixerCompatibleTickHandlersGUI(holder).isEmpty()
                 )
                 .sorted((o1, o2) -> Boolean.compare(holder.isSelected(o2), holder.isSelected(o1)))
                 .toList();
