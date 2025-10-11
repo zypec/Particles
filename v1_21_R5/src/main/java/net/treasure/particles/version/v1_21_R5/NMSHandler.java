@@ -17,6 +17,7 @@ import net.treasure.particles.util.nms.AbstractNMSHandler;
 import net.treasure.particles.util.nms.particles.ParticleBuilder;
 import net.treasure.particles.util.nms.particles.ParticleEffect;
 import net.treasure.particles.version.v1_21_R5.data.NMSGenericData;
+import net.treasure.particles.version.v1_21_R5.data.color.NMSColorData;
 import net.treasure.particles.version.v1_21_R5.data.color.NMSDustData;
 import net.treasure.particles.version.v1_21_R5.data.color.NMSDustTransitionData;
 import org.bukkit.Bukkit;
@@ -101,8 +102,8 @@ public class NMSHandler extends AbstractNMSHandler {
     }
 
     @Override
-    public Object getParticleParam(ParticleEffect effect) {
-        return getGenericData(effect, null);
+    public Object getColorData(ParticleEffect effect, Color color, int alpha) {
+        return new NMSColorData(effect, alpha, color.getRed(), color.getGreen(), color.getBlue()).toNMS();
     }
 
     @Override
@@ -111,7 +112,7 @@ public class NMSHandler extends AbstractNMSHandler {
     }
 
     @Override
-    public Object getColorTransitionData(Color color, Color transition, float size) {
+    public Object getDustTransitionData(Color color, Color transition, float size) {
         return new NMSDustTransitionData(color, transition, size).toNMS();
     }
 

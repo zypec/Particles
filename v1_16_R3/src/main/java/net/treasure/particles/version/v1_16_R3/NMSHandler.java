@@ -1,6 +1,11 @@
 package net.treasure.particles.version.v1_16_R3;
 
-import net.minecraft.server.v1_16_R3.*;
+import net.minecraft.server.v1_16_R3.EntityLightning;
+import net.minecraft.server.v1_16_R3.EntityTypes;
+import net.minecraft.server.v1_16_R3.Packet;
+import net.minecraft.server.v1_16_R3.PacketListenerPlayOut;
+import net.minecraft.server.v1_16_R3.PacketPlayOutSpawnEntity;
+import net.minecraft.server.v1_16_R3.PacketPlayOutWorldParticles;
 import net.treasure.particles.util.nms.AbstractNMSHandler;
 import net.treasure.particles.util.nms.particles.ParticleBuilder;
 import net.treasure.particles.util.nms.particles.ParticleEffect;
@@ -11,7 +16,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_16_R3.CraftParticle;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -62,7 +66,7 @@ public class NMSHandler extends AbstractNMSHandler {
             var location = builder.location();
             world = location.getWorld();
             if (world == null) return;
-            
+
             var packet = new PacketPlayOutWorldParticles(
                     builder.data(),
                     builder.longDistance(),
@@ -89,9 +93,8 @@ public class NMSHandler extends AbstractNMSHandler {
     }
 
     @Override
-    public Object getParticleParam(ParticleEffect effect) {
-        var bukkit = effect.bukkit();
-        return bukkit == null ? null : CraftParticle.toNMS(bukkit);
+    public Object getColorData(ParticleEffect effect, Color color, int alpha) {
+        return getGenericData(effect, color);
     }
 
     @Override
@@ -100,7 +103,7 @@ public class NMSHandler extends AbstractNMSHandler {
     }
 
     @Override
-    public Object getColorTransitionData(Color color, Color transition, float size) {
+    public Object getDustTransitionData(Color color, Color transition, float size) {
         return new NMSDustTransitionData(color, transition, size).toNMS();
     }
 

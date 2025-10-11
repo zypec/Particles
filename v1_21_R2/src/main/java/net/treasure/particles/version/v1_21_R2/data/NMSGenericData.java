@@ -12,7 +12,6 @@ public class NMSGenericData extends ParticleGenericData {
 
     @Override
     public Object toNMS() {
-        var particle = particleEffect.bukkit();
         if (particle == null) return null;
         return CraftParticle.createParticleParam(particle, object);
     }

@@ -96,9 +96,8 @@ public class NMSHandler extends AbstractNMSHandler {
         }
     }
 
-    @Override
-    public Object getParticleParam(ParticleEffect effect) {
-        return getGenericData(effect, null);
+    public Object getColorData(ParticleEffect effect, Color color, int alpha) {
+        return getGenericData(effect, color);
     }
 
     @Override
@@ -107,7 +106,7 @@ public class NMSHandler extends AbstractNMSHandler {
     }
 
     @Override
-    public Object getColorTransitionData(Color color, Color transition, float size) {
+    public Object getDustTransitionData(Color color, Color transition, float size) {
         return new NMSDustTransitionData(color, transition, size).toNMS();
     }
 

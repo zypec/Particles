@@ -16,17 +16,17 @@ public abstract class AbstractNMSHandler {
 
     public abstract void sendParticles(List<ParticleBuilder> builders);
 
-    public abstract Object getParticleParam(ParticleEffect effect);
-
-    public Object getColorData(Color color) {
-        return getDustData(color, 1f);
-    }
+    public abstract Object getColorData(ParticleEffect effect, Color color, int alpha);
 
     public abstract Object getDustData(Color color, float size);
 
-    public abstract Object getColorTransitionData(Color color, Color transition, float size);
+    public abstract Object getDustTransitionData(Color color, Color transition, float size);
 
     public abstract Object getGenericData(ParticleEffect effect, Object data);
+
+    public Object getParticleParam(ParticleEffect effect) {
+        return getGenericData(effect, null);
+    }
 
     public Object getTargetData(ParticleEffect effect, EffectData effectData, Color color, Location target, int duration) {
         return getGenericData(effect, null);

@@ -20,7 +20,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_19_R1.CraftParticle;
 import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -98,9 +97,8 @@ public class NMSHandler extends AbstractNMSHandler {
     }
 
     @Override
-    public Object getParticleParam(ParticleEffect effect) {
-        var bukkit = effect.bukkit();
-        return bukkit == null ? null : CraftParticle.toNMS(bukkit);
+    public Object getColorData(ParticleEffect effect, Color color, int alpha) {
+        return getGenericData(effect, color);
     }
 
     @Override
@@ -109,7 +107,7 @@ public class NMSHandler extends AbstractNMSHandler {
     }
 
     @Override
-    public Object getColorTransitionData(Color color, Color transition, float size) {
+    public Object getDustTransitionData(Color color, Color transition, float size) {
         return new NMSDustTransitionData(color, transition, size).toNMS();
     }
 
