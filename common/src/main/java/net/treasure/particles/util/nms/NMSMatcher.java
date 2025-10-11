@@ -31,6 +31,7 @@ public class NMSMatcher {
         registerVersion("v1_21_R3", "21.4");
         registerVersion("v1_21_R4", "21.5");
         registerVersion("v1_21_R5", "21.6", "21.7", "21.8");
+        registerVersion("v1_21_R6", "21.9", "21.10");
     }
 
     private static void registerVersion(String plugin, String... versions) {

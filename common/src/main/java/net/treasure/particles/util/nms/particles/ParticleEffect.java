@@ -25,6 +25,15 @@ import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.
 @Getter
 public enum ParticleEffect {
     /**
+     * <p>Represents the flame of copper torches.</p>
+     * <b>Information</b>
+     * <ul>
+     *     <li>Appearance: Green flame</li>
+     *     <li>Speed Value: ???</li>
+     * </ul>
+     */
+    COPPER_FIRE_FLAME(21, 9, "copper_fire_flame"),
+    /**
      * <p>Falls off the bottom of pale oak leaves.</p>
      * <b>Information</b>
      * <ul>
