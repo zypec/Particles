@@ -16,6 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 public class MixerHolder extends EffectsHolder {
+
     private final List<Pair<Effect, TickHandler>> selected;
     private final EnumMap<HandlerEvent, Pair<Effect, TickHandler>> locked;
     private String prefColorGroup;
@@ -70,5 +71,8 @@ public class MixerHolder extends EffectsHolder {
     public void reset() {
         selected.clear();
         locked.clear();
+        prefColorGroup = null;
+        needsColorGroup = false;
+        canSelectAnotherEffect = false;
     }
 }

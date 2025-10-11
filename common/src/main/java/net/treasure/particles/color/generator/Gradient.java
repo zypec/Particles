@@ -60,4 +60,8 @@ public class Gradient {
                 Integer.valueOf(hex.substring(3, 5), 16),
                 Integer.valueOf(hex.substring(5, 7), 16));
     }
+
+    public static int asARGB(int alpha, int red, int green, int blue) {
+        return alpha << 24 | red << 16 | green << 8 | blue;
+    }
 }

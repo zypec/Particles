@@ -51,7 +51,7 @@ public class TickHandler {
         if (maxExecuted <= 0) return this.event == null || this.event == event;
 
         if (executed >= maxExecuted) {
-            if (this.event != event) {
+            if (this.event != null && this.event != event) {
                 executed = 0;
                 return false;
             }

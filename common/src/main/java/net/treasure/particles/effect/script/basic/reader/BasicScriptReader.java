@@ -11,7 +11,8 @@ import java.util.function.Function;
 
 @AllArgsConstructor
 public class BasicScriptReader<T extends Script> extends ScriptReader<ReaderContext<T>, T> {
-    final Function<String, T> callable;
+
+    protected final Function<String, T> callable;
 
     @Override
     public T read(Effect effect, String type, String line) throws ReaderException {

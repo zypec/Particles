@@ -47,7 +47,6 @@ public class MixerGUI extends GUI {
 
     public MixerGUI(GUIManager manager) {
         super(manager, GUIType.MIXER);
-        this.effectManager = TreasureParticles.getEffectManager();
         this.playerManager = TreasureParticles.getPlayerManager();
         this.colorManager = TreasureParticles.getColorManager();
     }
