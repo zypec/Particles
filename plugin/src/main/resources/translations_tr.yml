@@ -1,5 +1,5 @@
 # Bu değeri değiştirmeyin!
-version: "1.5.0"
+version: "1.5.2"
 # Çeviriler
 prefix: "<b><gradient:#c26767:#c28b67:#d47d66>TrParticles</b> <dark_gray><b>|</b></dark_gray>"
 notification: "<prefix><!b> <aqua><b><discord>Discord</discord></b> <dark_gray>/</dark_gray> <b><download>BuiltByBit</download></b> <dark_gray>/</dark_gray> <b><wiki>Wiki</wiki>"
@@ -27,8 +27,8 @@ gui:
     only-elytra: "<gold>Sadece Elitra giyili iken çalışır."
     event-type: "<dark_gray>Çalışma türü: {0}"
     event-types: "<dark_gray>Çalışma türü: {0}"
-    mixer: "<dark_green>Efekt Mix'leyici"
-    open-player-mix-list: "<green>Efekt mix listeni açmak için tıkla!"
+    mixer: "<gradient:#096e05:#31ab2c:#096e05><b>Effect Mixer"
+    open-player-mix-list: "<green>[Sol-Tıkla] <gray>Efekt mix listeni aç."
     open-mixer: "<gray>[Sağ-Tıkla] Mix'leyiciyi aç."
     remove-mix: "<red>[Orta-Tıkla] Mix'i sil."
     mix-removed: "<prefix><!b> <green>Mix silindi." # Sohbet mesajı
@@ -39,7 +39,7 @@ gui:
     save-color-scheme: "<gray><i>Sağ tıklayarak efekt için bu renk şemasını tercihine ekleyebilirsin."
     random-color: "<#87FF65>❤ Rastgele Renk Seç"
   mixer-gui:
-    title: "Efekt Mix'leyici"
+    title: "           <gradient:#096e05:#31ab2c:#096e05><b>Effect Mixer"
     all-selected: "<green>Tüm işleyiciler seçili!"
     select-all: "<#87FF65>❤ Tıkla ve efekti seç!"
     selected-all: "<prefix><!b> <green>Efekt seçildi:<reset> {0}" # Sohbet mesajı
@@ -117,6 +117,7 @@ events:
   standing: "Hareketsiz Durma"
   sneaking: "Eğilme"
   projectile: "Atış"
+  projectile-hit: "İsabet"
   mob-kill: "Yaratık Öldürme"
   mob-damage: "Yaratığa Hasar Verme"
   player-kill: "Oyuncu Öldürme"
@@ -158,6 +159,7 @@ effects:
   orbit: "<gradient:#FF8C42:#FF3C38>Yörünge"
   whirl: "<#3A0CA3>Dönence"
   planner: "<gradient:green:dark_green>Planör"
+  roller: "<#0F4C5C>Silindir"
   # Spesyal
   helix: "<b><white>Spesyal /</white> Sarmal"
   complementary: "<b><white>Spesyal /</white> Tamamlayıcı"
@@ -172,8 +174,10 @@ effects:
   blue-shield: "<b><white>Spesyal /</white> Mavi Kalkan"
   footprint: "<b><white>Spesyal /</white> Ayakizi"
   smoke: "<b><white>Spesyal /</white> Duman"
+  green-smoke: "<b><white>Special /</white> Yeşil Duman"
   rocket: "<b><white>Spesyal /</white> Roket"
   heart: "<b><white>Spesyal /</white> Kalp"
+  heart-wave: "<b><white>Special /</white> Kalp Dalgası"
   # Yazı Efektleri
   love-you: "<#f54242>Seni Seviyorum"
   hello: "<gray>Merhaba!"
@@ -189,6 +193,7 @@ effects:
   tear: "<#c2979e>Gözyaşı"
   cherry-death: "<#ffa3e3>Yapraklı Ölüm"
   dust-death: "<#756370>Tozlu Ölüm"
+  explosive: "<#E36414>Patlayıcı"
   # Nabız
   pulse: "<gold>Nabız"
   pulse-reverse: "<dark_aqua>Ters Nabız"
@@ -211,6 +216,7 @@ descriptions:
   seasonal-effect: "<gray>Dönemsel Efekt"
   featured-behavior: "<gray>Has Özellik"
   elytra-boost: "<#ffbc33>Havai fişek ile elitranı hızlandırdığında efekt değişir."
+  death-effect: "<red>Yaratık öldürünce efekt çalışır."
 # Renk İsimleri
 colors:
   rainbow: "<rainbow>Rengarenk"
@@ -224,7 +230,8 @@ colors:
   blue-purple: "<gradient:#3242a8:#642e94>Mavi > Mor"
   white-gray: "<gradient:white:gray>Beyaz > Gri"
   dark-colors: "<gradient:#CB997E:#B7B7A4>Koyu Renkler"
-  christmas: "<gradient:#A7C957:#F2E8CF:#BC4749><b>Yılbaşı"
+  christmas: "<gradient:#A7C957:#F2E8CF:#BC4749><b>Yılbaşı</b></gradient>"
+  halloween: "<gradient:#5F0F40:#9A031E:#FB8B24:#E36414:#0F4C5C><b>Cadılar Bayramı</b></gradient>"
 # PlaceholderAPI Mesajları
 placeholders:
   current-effect-null: "Yok"

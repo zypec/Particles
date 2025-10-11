@@ -22,6 +22,18 @@ public class TreasurePlugin extends AbstractTreasurePlugin {
 
     @Override
     public void onEnable() {
+//        try {
+//            var address = InetAddress.getByName("10.10.13.1");
+//            if (!address.isReachable(10_000)) {
+//                disable("Eklentinin bu sürümü sadece Treas sunucularında çalıştırılabilir. Eğer bir yanlışlık olduğunu düşünüyorsanız lütfen destek talebi açınız.");
+//                return;
+//            }
+//            getLogger().info("TreasureParticles | Treas");
+//        } catch (IOException e) {
+//            disable("Eklentinin bu sürümü sadece Treas sunucularında çalıştırılabilir. Eğer bir yanlışlık olduğunu düşünüyorsanız lütfen destek talebi açınız.");
+//            return;
+//        }
+
         TreasureParticles.setPlugin(this);
 
         // Commands & Listeners

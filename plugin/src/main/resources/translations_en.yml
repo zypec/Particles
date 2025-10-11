@@ -1,5 +1,5 @@
 # Do not change!
-version: "1.5.0"
+version: "1.5.2"
 # Translations
 prefix: "<b><gradient:#c26767:#c28b67:#d47d66>TrParticles</b> <dark_gray><b>|</b></dark_gray>"
 notification: "<prefix><!b> <aqua><b><discord>Discord</discord></b> <dark_gray>/</dark_gray> <b><download>BuiltByBit</download></b> <dark_gray>/</dark_gray> <b><wiki>Wiki</wiki>"
@@ -23,14 +23,14 @@ gui:
     random-effect: "<#87FF65>❤ Select Random Effect"
     reset-effect: "<yellow>Reset Effect"
     current-effect: "<gray>Current Effect: <gold>{0}"
-    color-selection-available: "<gray>[Right-Click] You can change the colors of this effect."
+    color-selection-available: "<gray>[Right-Click] You can change the color scheme of this effect."
     only-elytra: "<gold>Only works when Elytra is equipped."
     event-type: "<dark_gray>Event Type: {0}"
     event-types: "<dark_gray>Event Types: {0}"
-    mixer: "<dark_green>Effect Mixer"
-    open-player-mix-list: "<green>Click to open your effect mix list!"
-    open-mixer: "<gray>[Right-Click] Open effect mixer GUI."
-    remove-mix: "<red>[Middle-Click] Remove mix."
+    mixer: "<gradient:#096e05:#31ab2c:#096e05><b>Effect Mixer"
+    open-player-mix-list: "<green>[Left-Click] <gray>Open your effect mix list."
+    open-mixer: "<yellow>[Right-Click] <gray>Open the effect mixer GUI."
+    remove-mix: "<red>[Middle-Click] Remove the mix."
     mix-removed: "<prefix><!b> <green>Mix removed." # Chat message
   colors-gui:
     title: "Pick a color scheme"
@@ -39,7 +39,7 @@ gui:
     save-color-scheme: "<gray><i>Right click to save this color scheme to preferences."
     random-color: "<#87FF65>❤ Select Random Color"
   mixer-gui:
-    title: "Effect Mixer"
+    title: "           <gradient:#096e05:#31ab2c:#096e05><b>Effect Mixer"
     all-selected: "<green>All handlers selected!"
     select-all: "<#87FF65>❤ Click to select this effect!"
     selected-all: "<prefix><!b> <green>Selected:<reset> {0}" # Chat message
@@ -117,6 +117,7 @@ events:
   standing: "Standing"
   sneaking: "Sneaking"
   projectile: "Shooting"
+  projectile-hit: "Projectile Hit"
   mob-kill: "Killing Mob"
   mob-damage: "Damaging Mob"
   player-kill: "Killing Player"
@@ -158,6 +159,7 @@ effects:
   orbit: "<gradient:#FF8C42:#FF3C38>Orbit"
   whirl: "<#3A0CA3>Whirl"
   planner: "<gradient:green:dark_green>Planner"
+  roller: "<#0F4C5C>Roller"
   # Specials
   helix: "<b><white>Special /</white> Helix"
   complementary: "<b><white>Special /</white> Complementary"
@@ -172,8 +174,10 @@ effects:
   blue-shield: "<b><white>Special /</white> Blue Shield"
   footprint: "<b><white>Special /</white> Footprint"
   smoke: "<b><white>Special /</white> Smoke"
+  green-smoke: "<b><white>Special /</white> Green Smoke"
   rocket: "<b><white>Special /</white> Rocket"
   heart: "<b><white>Special /</white> Heart"
+  heart-wave: "<b><white>Special /</white> Heart Wave"
   # Text Effects
   love-you: "<#f54242>Love You"
   hello: "<gray>Hello!"
@@ -189,6 +193,7 @@ effects:
   tear: "<#c2979e>Tear"
   cherry-death: "<#ffa3e3>Cherry Death"
   dust-death: "<#756370>Dust Death"
+  explosive: "<#E36414>Explosive"
   # Pulse
   pulse: "<gold>Pulse"
   pulse-reverse: "<dark_aqua>Reverse Pulse"
@@ -211,6 +216,7 @@ descriptions:
   seasonal-effect: "<gray>Seasonal Effect"
   featured-behavior: "<gray>Featured Behavior"
   elytra-boost: "<#ffbc33>Effect changes when boosting elytra with fireworks."
+  death-effect: "<red>Spawns particle when killing mobs."
 # Color Names
 colors:
   rainbow: "<rainbow>Rainbow"
@@ -224,7 +230,8 @@ colors:
   blue-purple: "<gradient:#3242a8:#642e94>Blue > Purple"
   white-gray: "<gradient:white:gray>White > Gray"
   dark-colors: "<gradient:#CB997E:#B7B7A4>Dark Colors"
-  christmas: "<gradient:#A7C957:#F2E8CF:#BC4749><b>Christmas"
+  christmas: "<gradient:#A7C957:#F2E8CF:#BC4749><b>Christmas</b></gradient>"
+  halloween: "<gradient:#5F0F40:#9A031E:#FB8B24:#E36414:#0F4C5C><b>Halloween</b></gradient>"
 # PlaceholderAPI Messages
 placeholders:
   current-effect-null: "None"

@@ -1,5 +1,5 @@
 # Do not change!
-version: "1.5.0"
+version: "1.5.2"
 # Commons
 elytra-boost-1s: "conditional ({CTM} - {LBM} > 1000) ? return : none"
 elytra-boost-3s: "conditional ({CTM} - {LBM} > 3000) ? return : none"
@@ -27,17 +27,18 @@ swap-x-z:
 parkour-circle-easy: "circle [effect=minecraft:dust,tick=true,amount=10,origin=head*17.5,pos={x={RANDOM};y={RANDOM};z={RANDOM}},radius={radius},particles={particles},color=#FFFFFF]"
 parkour-circle-normal: "circle [effect=minecraft:dust,amount=10,origin=head*20,pos={x={RANDOM};y={RANDOM};z={RANDOM}},radius={radius},particles={particles},color=#FFFFFF]"
 parkour-circle-hard: "circle [effect=minecraft:dust,amount=5,origin=head*20,pos={x={RANDOM};y={RANDOM};z={RANDOM}},radius={radius},particles={particles},color=#FFFFFF]"
-parkour-success: "play-sound [name=entity.villager.yes,client=true]"
-parkour-fail: "play-sound [name=minecraft:entity.villager.no,client=true]"
-parkour-spawned: "play-sound [name=entity.arrow.hit_player,client=true]"
 # Parkour (Fast)
 parkour-fast: "circle [effect=minecraft:dust,amount=10,origin=head*{x={m};y=10;z={m}},pos={x={RANDOM-};y={RANDOM-};z={RANDOM-}},radius={radius},particles={particles},color=#FFFFFF]"
-parkour-fast-streak:
-  - "play-sound [name=entity.arrow.hit_player,client=true]"
+# Parkour (Common)
+parkour-started: "actionbar <green><b>Parkour Started!"
+parkour-spawned: "play-sound [name=minecraft:block.note_block.chime,pitch=2,client=true]"
+parkour-streak:
+  - "play-sound [name=minecraft:entity.arrow.hit_player,client=true]"
   - "var streak+=1"
   - "actionbar <light_purple><b>STREAK: {#:streak}"
-parkour-fast-fail:
-  - "play-sound [name=minecraft:entity.villager.no,client=true]"
+parkour-fail:
+  - "play-sound [name=minecraft:block.note_block.didgeridoo,pitch=0,client=true]"
+  - "actionbar <red><b>Failed."
   - "conditional (streak>0) ? chat <prefix><!b> Last streak: <light_purple>{#:streak} : none"
   - "var streak=0"
 # Mob Kill Randomizer
@@ -50,5 +51,14 @@ landing-honey:
 spore-blossom:
   - "spread [effect=minecraft:falling_spore_blossom,origin=feet,pos={y={y}},direction=false,vertical=false]"
   - "return"
+# Roller
+roller-start: "conditional (radius==1) ? preset roller-standing : var-c [variable=radius,max=1,min=0.5,step=0.025]"
+roller-standing:
+  - "var stop=0"
+  - "var particles=32"
+roller-stop: "conditional (radius==0.5) ? preset roller-moving : var-c [variable=radius,max=1,min=0.5,step=0.025]"
+roller-moving:
+  - "var stop=1"
+  - "var particles=16"
 # Debug
 debug-velocity: "actionbar <red>x={velocityX} <gold>y={velocityY} <yellow>z={velocityZ} <green>length={velocityLength}"

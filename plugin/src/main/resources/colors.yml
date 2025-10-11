@@ -1,8 +1,8 @@
 # Do not change!
-version: "1.5.0"
+version: "1.5.2"
 rainbow-colors-size: 25
 schemes:
-  # Gradient Color Schemes
+  # Common Gradient Color Schemes
   gradient-red-blue:
     name: "%gradient%<gray>: %red-blue%"
     values: [ "#FC5C7D", "#6A82FB" ]
@@ -35,25 +35,25 @@ schemes:
     name: "%gradient%<gray>: %white-gray%"
     values: [ "#FFFFFF", "#89918b" ]
     size: 20
-  # Dark Colors
+  # Common Dark Color Schemes
   dark-1:
-    name: "%dark-colors% <gray>[1]"
+    name: "%dark-colors% <gray>#1"
     values: [ "#3A015C", "#4F0147", "#35012C", "#290025", "#11001C" ]
     size: 20
   dark-2:
-    name: "%dark-colors% <gray>[2]"
+    name: "%dark-colors% <gray>#2"
     values: [ "#191528", "#3C162F", "#5C162E", "#7C162E", "#110E1B" ]
     size: 20
   dark-3:
-    name: "%dark-colors% <gray>[3]"
+    name: "%dark-colors% <gray>#3"
     values: [ "#0D060F", "#1E2824", "#5D3C18", "#766B65", "#230000" ]
     size: 20
   dark-4:
-    name: "%dark-colors% <gray>[4]"
+    name: "%dark-colors% <gray>#4"
     values: [ "#45040C", "#720714", "#000000", "#12562A", "#063A21" ]
     size: 20
   dark-5:
-    name: "%dark-colors%: <gray>[5]"
+    name: "%dark-colors% <gray>#5"
     values: [ "#523822", "#41250C", "#2D1805", "#261405", "#190E03" ]
     size: 20
   # Special
@@ -63,17 +63,11 @@ schemes:
   heart:
     values: [ "#f54242", "#fc9090" ]
     size: 7
+  heart-wave:
+    values: [ "#52212b", "#9e1b37" ]
+    size: 10
   rocket:
     values: [ "#5bf5c7", "#42ff75", "#0eb33b", "#0eb381" ]
-    size: 10
-  tear:
-    values: [ "#f2d7d5", "#faf3f2", "#cfc9c8" ]
-    size: 10
-  cherry-death:
-    values: [ "#f28fc9", "#ffa3e3", "#de6abb" ]
-    size: 10
-  dust-death:
-    values: [ "#3b2b34", "#665860", "#6b6769" ]
     size: 10
   complementary1-1:
     values: [ "#8A1BE4", "#E01F5A", "#DC8B23", "#75E41B" ]
@@ -96,6 +90,9 @@ schemes:
   smoke:
     values: [ "#fee440", "#9e2a2b", "#540b0e" ]
     size: 20
+  green-smoke:
+    values: [ "#42f55a", "#4bbf75", "#49855f" ]
+    size: 20
   infested:
     values: [ "#63615a", "#a8a396" ]
     size: 15
@@ -108,13 +105,18 @@ schemes:
   footprint:
     values: [ "#40bda8", "#a2e8dc" ]
     size: 15
-  # Christmas
+  # Seasonal
   christmas:
-    name: "%christmas%"
+    name: "%christmas% <gray><!b><i>(Seasonal)"
     values: [ "#ef233c", "#d5f2e3", "#73ba9b", "#003e1f", "#d90429", "#823a14" ]
     size: 30
+  halloween:
+    name: "%halloween% <gray><!b><i>(Seasonal)"
+    values: [ "#5F0F40", "#9A031E", "#FB8B24", "#E36414", "#0F4C5C" ]
+    size: 30
 groups:
-  gradients:
+  default:
+    # scheme-name: "permission"
     gradient-red-blue: "none"
     gradient-red-yellow-blue: "none"
     gradient-red-gold: "none"
@@ -128,4 +130,5 @@ groups:
     dark-3: "none"
     dark-4: "none"
     dark-5: "none"
-    christmas: "%christmas-colors%"
+    christmas: "%seasonal-colors%"
+    halloween: "%seasonal-colors%"

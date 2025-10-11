@@ -17,13 +17,13 @@ effects:
       moving:
         event: MOVING
         scripts:
-          - circle [effect=minecraft:dust,tick-data=true,particles=8,radius=0.25,amount=10,pos={y=-0.5},billboard=vertical,origin=head*-1.25,color={name=rainbow;speed=0.075}]
+          - circle [effect=minecraft:dust,tick-data=true,particles=16,radius=0.25,amount=10,pos={y=-0.5},billboard=vertical,origin=head*-1.25,color={name=rainbow;speed=3.2}]
       standing:
         event: STANDING
         mixer-options:
           depend: [ "reset-y" ]
         scripts:
-          - circle [effect=minecraft:dust,directional=false,vertical=false,origin=feet,pos={y={y}},color={name=rainbow;speed=0.75}]
+          - circle [effect=minecraft:dust,directional=false,vertical=false,origin=feet,pos={y={y}},color={name=rainbow;speed=0.8},tick-data=true]
           - var-c [variable=y,max=1.75,min=0,step=0.1]
       reset-y:
         event: STANDING
@@ -394,7 +394,7 @@ effects:
           - var-c [variable=y,max=1.75,min=0,step=0.1]
   gradient-circle:
     display-name: "%gradient-circle%"
-    color-group: "gradients"
+    color-group: "default"
     permission: "%gradient-effects%"
     variables: [ "y=0" ]
     interval: 1
@@ -425,7 +425,7 @@ effects:
           - var y=0
   gradient-line:
     display-name: "%gradient-line%"
-    color-group: "gradients"
+    color-group: "default"
     permission: "%gradient-effects%"
     interval: 1
     icon:
@@ -446,7 +446,7 @@ effects:
           - particle [effect=minecraft:dust,size=5,origin=feet,color={dynamic=true;speed=1;revert=true},long-distance=true]
   gradient-spiral:
     display-name: "%gradient-spiral%"
-    color-group: "gradients"
+    color-group: "default"
     permission: "%gradient-effects%"
     interval: 1
     icon:
@@ -466,7 +466,7 @@ effects:
           - spiral [effect=minecraft:dust,steps=60,size=2,radius=0.75,origin=head,color={dynamic=true;revert=true;speed=0.25}]
   gradient-cape:
     display-name: "%gradient-cape%"
-    color-group: "gradients"
+    color-group: "default"
     permission: "%gradient-effects%"
     icon:
       material: TIPPED_ARROW
@@ -503,7 +503,7 @@ effects:
           - single [effect=minecraft:dust,size=1.2,origin=head*-1.25,billboard=vertical,pos={z=-1;y=-0.15;x=-0.25},color={dynamic=true;revert=true;speed=0.25}]
   gradient-leaves:
     display-name: "%gradient-leaves%"
-    color-group: "gradients"
+    color-group: "default"
     permission: "%rainbow-effects%"
     variables: [ "y=0" ]
     interval: 1
@@ -541,39 +541,66 @@ effects:
   parkour-easy:
     display-name: "%parkour-easy%"
     permission: "%parkour%"
-    variables: [ "radius=1.5", "particles=48" ]
+    variables: [ "radius=1.5", "particles=48", "streak=0" ]
     interval: 1
     icon:
       material: HEART_OF_THE_SEA
     on-tick:
-      handler:
-        event: ELYTRA
+      moving:
+        event: MOVING
+        max-executed: 1
+        mixer-options:
+          private: true
         scripts:
-          - parkour [style=parkour-circle-easy,standby=#ffffff,success=#09b849,fail=#b80909,interval=60,duration=5,when-succeeded=parkour-success,when-failed=parkour-fail,when-spawned=parkour-spawned]
+          - "conditional (streak==0) ? none : preset parkour-fail"
+      elytra:
+        event: ELYTRA
+        mixer-options:
+          depend: [ "moving" ]
+        scripts:
+          - parkour [style=parkour-circle-easy,standby=#ffffff,success=#09b849,fail=#b80909,interval=60,duration=5,when-succeeded=parkour-streak,when-failed=parkour-fail,when-spawned=parkour-spawned,when-started=parkour-started]
   parkour-normal:
     display-name: "%parkour-normal%"
     permission: "%parkour%"
-    variables: [ "radius=1", "particles=32" ]
+    variables: [ "radius=1", "particles=32", "streak=0" ]
     interval: 1
     icon:
       material: HEART_OF_THE_SEA
     on-tick:
-      handler:
-        event: ELYTRA
+      moving:
+        event: MOVING
+        max-executed: 1
+        mixer-options:
+          private: true
         scripts:
-          - parkour [style=parkour-circle-normal,standby=#ffffff,success=#09b849,fail=#b80909,interval=60,duration=5,when-succeeded=parkour-success,when-failed=parkour-fail,when-spawned=parkour-spawned]
+          - "conditional (streak==0) ? none : preset parkour-fail"
+      elytra:
+        event: ELYTRA
+        mixer-options:
+          depend: [ "moving" ]
+        scripts:
+          - parkour [style=parkour-circle-normal,standby=#ffffff,success=#09b849,fail=#b80909,interval=60,duration=5,when-succeeded=parkour-streak,when-failed=parkour-fail,when-spawned=parkour-spawned,when-started=parkour-started]
   parkour-hard:
     display-name: "%parkour-hard%"
     permission: "%parkour%"
-    variables: [ "radius=0.65", "particles=24" ]
+    variables: [ "radius=0.65", "particles=24", "streak=0" ]
     interval: 1
     icon:
       material: HEART_OF_THE_SEA
     on-tick:
-      handler:
-        event: ELYTRA
+      moving:
+        event: MOVING
+        max-executed: 1
+        mixer-options:
+          private: true
         scripts:
-          - parkour [style=parkour-circle-hard,standby=#ffffff,success=#09b849,fail=#b80909,interval=60,duration=5,when-succeeded=parkour-success,when-failed=parkour-fail,when-spawned=parkour-spawned]
+          - "conditional (streak==0) ? none : preset parkour-fail"
+      elytra:
+        event: ELYTRA
+        mixer-options:
+          depend: [ "moving" ]
+        scripts:
+          - parkour [style=parkour-circle-hard,standby=#ffffff,success=#09b849,fail=#b80909,interval=60,duration=5,when-succeeded=parkour-streak,when-failed=parkour-fail,when-spawned=parkour-spawned,when-started=parkour-started]
   parkour-fast:
     display-name: "%parkour-fast%"
     permission: "%parkour%"
@@ -582,11 +609,20 @@ effects:
     icon:
       material: HEART_OF_THE_SEA
     on-tick:
-      handler:
+      moving:
+        event: MOVING
+        max-executed: 1
+        mixer-options:
+          private: true
+        scripts:
+          - "conditional (streak==0) ? none : preset parkour-fail"
+      elytra:
         event: ELYTRA
+        mixer-options:
+          depend: [ "moving" ]
         scripts:
           - var m=20+{velocityLength}*5
-          - parkour [style=parkour-fast,standby=#ffffff,success=#09b849,fail=#b80909,interval=1,duration=3,when-succeeded=parkour-fast-streak,when-failed=parkour-fast-fail,immediate=true]
+          - parkour [style=parkour-fast,standby=#ffffff,success=#09b849,fail=#b80909,interval=1,duration=3,when-succeeded=parkour-streak,when-failed=parkour-fail,when-started=parkour-started,immediate=true]
   complementary:
     display-name: "%complementary%"
     color-animation: "complementary1-1"
@@ -659,6 +695,22 @@ effects:
           - "var y=({stepY} / {maxStepY}) * 1.5 - 0.25"
           - "var z=sin(({stepX}/{maxStepX}) * {2PI} + (({2PI} / 8) * {i})) * (({maxStepY} - abs({stepY})) / {maxStepY})"
           - "particle [effect=minecraft:end_rod,pos={y={y};x={x};z={z}},amount=0,origin=head]"
+  heart-wave:
+    display-name: "%heart-wave%"
+    color-animation: "heart-wave"
+    name-color-animation: true
+    permission: "%special%"
+    variables: [ "y", "step=0.01" ]
+    interval: 1
+    icon:
+      material: POTION
+    on-tick:
+      handler:
+        event: NONE
+        scripts:
+          - var-c [variable=step,min=0.01,max=0.3,step=0.005]
+          - var-c [variable=y,min=0.5,max=1.5,step={step}]
+          - spiral [effect=minecraft:damage_indicator,steps=20,radius=0.65,origin=feet,amount=0,pos={y={y}}]
   galaxy:
     display-name: "%galaxy%"
     color-animation: "galaxy"
@@ -968,6 +1020,30 @@ effects:
           - spiral [effect=minecraft:flame,speed=0,steps=12,radius=0.45,vertical=false,directional=false,pos={y=0.25},origin=head]
           - spiral [effect=minecraft:small_flame,speed=0,steps=12,radius=0.25,vertical=false,directional=false,pos={y=0.4},origin=head]
           - single [effect=minecraft:large_smoke,speed=0,pos={y=0.5},origin=head] ~2
+  green-smoke:
+    display-name: "%green-smoke%"
+    color-animation: "green-smoke"
+    name-color-animation: true
+    permission: "%special%"
+    interval: 1
+    icon:
+      material: POTION
+    on-tick:
+      moving:
+        event: MOVING
+        scripts:
+          - circle [effect=minecraft:copper_fire_flame,speed=0,particles=12,radius=0.25,vertical=false,directional=false,pos={y=0.4},origin=head]
+          - single [effect=minecraft:large_smoke,speed=0,pos={y=0.5},origin=head] ~2
+      standing:
+        event: STANDING
+        scripts:
+          - spiral [effect=minecraft:copper_fire_flame,speed=0,steps=12,radius=0.3,vertical=false,directional=false,pos={y=0.25},origin=head]
+          - single [effect=minecraft:large_smoke,speed=0,pos={y=0.5},origin=head] ~2
+      static:
+        event: STATIC
+        scripts:
+          - spiral [effect=minecraft:copper_fire_flame,speed=0,steps=12,radius=0.3,vertical=false,directional=false,pos={y=0.25},origin=head]
+          - single [effect=minecraft:large_smoke,speed=0,pos={y=0.5},origin=head] ~2
   heart:
     display-name: "%heart%"
     color-animation: "heart"
@@ -1040,12 +1116,47 @@ effects:
           - var x={RANDOM}-0.5
           - var y={RANDOM}-0.5
           - "conditional ({CTM} - {LBM} > 2000) ? particle [effect=minecraft:dust,direction=true,pos={x={x};y={y}},amount=1,origin=head*-2.5,color={name=rocket}] : particle [effect=minecraft:dust,size=3,direction=true,pos={x={x};y={y}},amount=0,origin=head*-2.5,color={name=rocket}]"
+  roller:
+    display-name: "%roller%"
+    name-color-animation: true
+    color-group: "default"
+    permission: "%spinning%"
+    variables: [ "y=2", "stop=0", "radius=1", "particles=32", "max=2" ]
+    interval: 1
+    icon:
+      material: STRING
+    on-tick:
+      timer:
+        event: NONE
+        mixer-options:
+          private: true
+        scripts:
+          - "conditional (stop==0) ? none : break-handler"
+          - var-c [variable=y,max={max},min=0.25,step=0.05]
+      standing-check:
+        event: STANDING
+        mixer-options:
+          private: true
+        scripts:
+          - "conditional (stop==1) ? preset roller-start : var max=2"
+      particle:
+        event: NONE
+        depend: [ "timer", "standing-check", "moving-check" ]
+        scripts:
+          - circle [effect=minecraft:instant_effect,particles={particles},radius={radius},color={dynamic=true;revert=false;speed=1.8},origin=feet,tick-data=true,pos={y={y}},amount=0,power=3,vertical=false,directional=false]
+      moving-check:
+        event: MOVING
+        mixer-options:
+          private: true
+        scripts:
+          - "conditional (y==0.25) ? preset roller-stop : var max={y}"
   planner:
     display-name: "%planner%"
-    color-animation: "#32a852"
     permission: "%spinning%"
     variables: [ "step", "x", "z", "angle", "xAng", "zAng" ]
     interval: 1
+    icon:
+      material: STRING
     on-tick:
       elytra:
         event: ELYTRA
@@ -1067,9 +1178,10 @@ effects:
           - var step=({step} + {PI} / 20) % 40
   orbit:
     display-name: "%orbit%"
-    color-animation: "gradient-red-yellow-blue"
     permission: "%spinning%"
     interval: 1
+    icon:
+      material: STRING
     on-tick:
       elytra:
         event: ELYTRA
@@ -1085,10 +1197,11 @@ effects:
           - multi-spiral [effect=minecraft:dust,amount=10,tick=true,pos={y=1.5},origin=feet,color={name=gradient-red-yellow-blue;revert=true;speed=0.15}]
   triple-line:
     display-name: "%triple-line%"
-    color-animation: "gradient-red-blue"
     permission: "%spinning%"
     variables: [ "r", "x1", "y1", "x2", "y2", "z" ]
     interval: 1
+    icon:
+      material: STRING
     on-tick:
       elytra:
         event: ELYTRA
@@ -1104,8 +1217,9 @@ effects:
           - particle [effect=minecraft:dust,pos={x={x2};y={y1};z={z}},amount=10,origin=head*2,color={name=gradient-red-blue;revert=true;speed=1}]
   whirl:
     display-name: "%whirl%"
-    color-animation: "whirl"
     permission: "%spinning%"
+    icon:
+      material: STRING
     on-tick:
       elytra:
         event: ELYTRA
@@ -1119,11 +1233,71 @@ effects:
         event: STATIC
         scripts:
           - full-spiral [effect=minecraft:dust,gap=2,pos={y=1},amount=5,origin=feet,color={name=whirl;revert=true;speed=0.05}]
+  rain:
+    display-name: "%rain%"
+    permission: "%weather%"
+    variables: [ "r", "x", "z" ]
+    interval: 3
+    icon:
+      material: SNOWBALL
+    on-tick:
+      elytra:
+        event: ELYTRA
+        times: 24
+        scripts:
+          - var r={i}*{PI}/24
+          - var x=cos({r})*{RANDOM}*2.5
+          - var z=sin({r})*{RANDOM}*2.5
+          - particle [effect=minecraft:dripping_water,direction=true,pos={x={x};y={z}},amount=0,origin=head*2]
+      moving:
+        event: MOVING
+        scripts:
+          - circle [effect=minecraft:cloud,radius=0.25,particles=12,pos={y=1},amount=0,origin=head,vertical=false,directional=false]
+          - spread [effect=minecraft:falling_water,spread=1,radius=0.25,particles=3,pos={y=1},amount=0,origin=head,vertical=false,directional=false]
+      standing:
+        event: STANDING
+        scripts:
+          - circle [effect=minecraft:cloud,radius=0.25,particles=6,pos={y=1},amount=0,origin=head,vertical=false,directional=false]
+          - spread [effect=minecraft:falling_water,spread=1,radius=0.25,particles=3,pos={y=1},amount=0,origin=head,vertical=false,directional=false]
+      static:
+        event: STATIC
+        scripts:
+          - circle [effect=minecraft:cloud,radius=0.25,particles=6,pos={y=1},amount=0,origin=head,vertical=false,directional=false]
+          - spread [effect=minecraft:falling_water,spread=1,radius=0.25,particles=3,pos={y=1},amount=0,origin=head,vertical=false,directional=false]
+  snow:
+    display-name: "%snow%"
+    permission: "%weather%"
+    variables: [ "r", "x", "z" ]
+    interval: 3
+    icon:
+      material: SNOWBALL
+    on-tick:
+      elytra:
+        event: ELYTRA
+        times: 24
+        scripts:
+          - var r={i}*{PI}/24
+          - var x=cos({r})*{RANDOM}*2
+          - var z=sin({r})*{RANDOM}*2
+          - particle [effect=minecraft:snowflake,direction=true,pos={x={x};y={z}},amount=0,origin=head*2]
+      moving:
+        event: MOVING
+        scripts:
+          - spread [effect=minecraft:snowflake,radius=0.25,particles=12,pos={y=1},amount=0,origin=head,vertical=false,directional=false]
+      standing:
+        event: STANDING
+        scripts:
+          - spread [effect=minecraft:snowflake,radius=0.25,particles=12,pos={y=1},amount=0,origin=head,vertical=false,directional=false]
+      static:
+        event: STATIC
+        scripts:
+          - spread [effect=minecraft:snowflake,radius=0.25,particles=12,pos={y=1},amount=0,origin=head,vertical=false,directional=false]
   sonic:
     display-name: "%sonic%"
-    color-animation: "#65f5fc"
     permission: "%basic%"
     interval: 3
+    icon:
+      material: SPECTRAL_ARROW
     on-tick:
       elytra:
         event: ELYTRA
@@ -1135,9 +1309,10 @@ effects:
           - particle [effect=minecraft:sonic_boom,origin=head]
   gust:
     display-name: "%gust%"
-    color-animation: "#faded2"
     permission: "%basic%"
     interval: 2
+    icon:
+      material: SPECTRAL_ARROW
     on-tick:
       elytra:
         event: ELYTRA
@@ -1147,12 +1322,45 @@ effects:
         event: PROJECTILE
         scripts:
           - single [effect=minecraft:gust,origin=feet]
+  explosive:
+    display-name: "%explosive%"
+    permission: "%death-effects%"
+    interval: 1
+    description:
+      - "%featured-behavior%"
+      - "%death-effect%"
+    icon:
+      material: REDSTONE
+    on-tick:
+      projectile:
+        event: PROJECTILE
+        scripts:
+          - particle [effect=minecraft:effect,power=1,origin=head,color={name=smoke;speed=0.45;revert=true},long-distance=true]
+      projectile-hit:
+        event: PROJECTILE_HIT
+        max-executed: 5
+        scripts:
+          - particle [effect=minecraft:flash,long-distance=true,origin=head,color={name=smoke;speed=4}]
+      mob-kill:
+        event: MOB_KILL
+        max-executed: 5
+        scripts:
+          - particle [effect=minecraft:flash,long-distance=true,origin=feet,color={name=smoke;speed=4}]
+      player-kill:
+        event: PLAYER_KILL
+        max-executed: 5
+        scripts:
+          - particle [effect=minecraft:flash,long-distance=true,origin=feet,color={name=smoke;speed=4}]
   skull-crusher:
     display-name: "%skull-crusher%"
-    color-animation: "gradient-red-blue"
     permission: "%death-effects%"
     variables: [ "t" ]
     interval: 1
+    description:
+      - "%featured-behavior%"
+      - "%death-effect%"
+    icon:
+      material: REDSTONE
     on-tick:
       reset-timer:
         event: MOB_KILL
@@ -1184,10 +1392,14 @@ effects:
           - "var t+=1"
   tear:
     display-name: "%tear%"
-    color-animation: "tear"
     permission: "%death-effects%"
     variables: [ "t=0", "y=0", "random=0" ]
     interval: 1
+    description:
+      - "%featured-behavior%"
+      - "%death-effect%"
+    icon:
+      material: REDSTONE
     on-tick:
       reset-variables:
         event: MOB_KILL
@@ -1213,9 +1425,13 @@ effects:
           - preset spore-blossom
   cherry-death:
     display-name: "%cherry-death%"
-    color-animation: "cherry-death"
     permission: "%death-effects%"
     interval: 2
+    description:
+      - "%featured-behavior%"
+      - "%death-effect%"
+    icon:
+      material: REDSTONE
     on-tick:
       mob-kill:
         event: MOB_KILL
@@ -1224,9 +1440,13 @@ effects:
           - spread [effect=minecraft:cherry_leaves,spread=0.25,particles=8,radius=0.25,vertical=false,origin=head,pos={y=0.75}]
   dust-death:
     display-name: "%dust-death%"
-    color-animation: "dust-death"
     permission: "%death-effects%"
     interval: 2
+    description:
+      - "%featured-behavior%"
+      - "%death-effect%"
+    icon:
+      material: REDSTONE
     on-tick:
       mob-kill:
         event: MOB_KILL
@@ -1235,10 +1455,14 @@ effects:
           - spread [effect=minecraft:falling_dust,block={material=GRAVEL},spread=0.25,particles=8,radius=0.25,vertical=false,origin=head,pos={y=0.75}]
   blood:
     display-name: "%blood%"
-    color-animation: "#a8324a"
     permission: "%death-effects%"
     variables: [ "x=0", "t=0" ]
     interval: 1
+    description:
+      - "%featured-behavior%"
+      - "%death-effect%"
+    icon:
+      material: REDSTONE
     on-tick:
       take-damage:
         event: TAKE_DAMAGE
@@ -1288,63 +1512,6 @@ effects:
           - particle [effect=minecraft:wax_on,direction=true,pos={x=1},origin=head]
           - particle [effect=minecraft:wax_on,direction=true,pos={x=-1},origin=head]
           - particle [effect=minecraft:wax_off,direction=true,origin=head]
-  rain:
-    display-name: "%rain%"
-    color-animation: "#345eeb"
-    permission: "%weather%"
-    variables: [ "r", "x", "z" ]
-    interval: 3
-    on-tick:
-      elytra:
-        event: ELYTRA
-        times: 24
-        scripts:
-          - var r={i}*{PI}/24
-          - var x=cos({r})*{RANDOM}*2.5
-          - var z=sin({r})*{RANDOM}*2.5
-          - particle [effect=minecraft:dripping_water,direction=true,pos={x={x};y={z}},amount=0,origin=head*2]
-      moving:
-        event: MOVING
-        scripts:
-          - circle [effect=minecraft:cloud,radius=0.25,particles=12,pos={y=1},amount=0,origin=head,vertical=false,directional=false]
-          - spread [effect=minecraft:falling_water,spread=1,radius=0.25,particles=3,pos={y=1},amount=0,origin=head,vertical=false,directional=false]
-      standing:
-        event: STANDING
-        scripts:
-          - circle [effect=minecraft:cloud,radius=0.25,particles=6,pos={y=1},amount=0,origin=head,vertical=false,directional=false]
-          - spread [effect=minecraft:falling_water,spread=1,radius=0.25,particles=3,pos={y=1},amount=0,origin=head,vertical=false,directional=false]
-      static:
-        event: STATIC
-        scripts:
-          - circle [effect=minecraft:cloud,radius=0.25,particles=6,pos={y=1},amount=0,origin=head,vertical=false,directional=false]
-          - spread [effect=minecraft:falling_water,spread=1,radius=0.25,particles=3,pos={y=1},amount=0,origin=head,vertical=false,directional=false]
-  snow:
-    display-name: "%snow%"
-    color-animation: "#ffffff"
-    permission: "%weather%"
-    variables: [ "r", "x", "z" ]
-    interval: 3
-    on-tick:
-      elytra:
-        event: ELYTRA
-        times: 24
-        scripts:
-          - var r={i}*{PI}/24
-          - var x=cos({r})*{RANDOM}*2
-          - var z=sin({r})*{RANDOM}*2
-          - particle [effect=minecraft:snowflake,direction=true,pos={x={x};y={z}},amount=0,origin=head*2]
-      moving:
-        event: MOVING
-        scripts:
-          - spread [effect=minecraft:snowflake,radius=0.25,particles=12,pos={y=1},amount=0,origin=head,vertical=false,directional=false]
-      standing:
-        event: STANDING
-        scripts:
-          - spread [effect=minecraft:snowflake,radius=0.25,particles=12,pos={y=1},amount=0,origin=head,vertical=false,directional=false]
-      static:
-        event: STATIC
-        scripts:
-          - spread [effect=minecraft:snowflake,radius=0.25,particles=12,pos={y=1},amount=0,origin=head,vertical=false,directional=false]
   pulse:
     display-name: "%pulse%"
     color-animation: "gradient-red-gold"
@@ -1444,7 +1611,6 @@ effects:
           - text [effect=minecraft:heart,origin=feet,pos={y=-1},text="ILY",vertical=true,billboard=vertical,font="Arial Black",scale=0.25]
   red-tail:
     display-name: "%red-tail%"
-    color-animation: "#a83252"
     permission: "%tail-effects%"
     interval: 1
     icon:
@@ -1456,7 +1622,6 @@ effects:
           - particle [effect=minecraft:block_marker,block={material=fire_coral},origin=feet]
   yellow-tail:
     display-name: "%yellow-tail%"
-    color-animation: "#d1b536"
     permission: "%tail-effects%"
     interval: 1
     icon:
@@ -1468,7 +1633,6 @@ effects:
           - particle [effect=minecraft:block_marker,block={material=horn_coral},origin=feet]
   pink-tail:
     display-name: "%pink-tail%"
-    color-animation: "#f59fda"
     permission: "%tail-effects%"
     interval: 1
     icon:
@@ -1480,7 +1644,6 @@ effects:
           - particle [effect=minecraft:block_marker,block={material=brain_coral},origin=feet]
   purple-tail:
     display-name: "%purple-tail%"
-    color-animation: "#7134eb"
     permission: "%tail-effects%"
     interval: 1
     icon:
@@ -1492,7 +1655,6 @@ effects:
           - particle [effect=minecraft:block_marker,block={material=bubble_coral},origin=feet]
   blue-tail:
     display-name: "%blue-tail%"
-    color-animation: "#2658ad"
     permission: "%tail-effects%"
     interval: 1
     icon:
@@ -1504,7 +1666,6 @@ effects:
           - particle [effect=minecraft:block_marker,block={material=tube_coral},origin=feet]
   rainbow-tail:
     display-name: "%rainbow-tail%"
-    color-animation: "rainbow"
     permission: "%tail-effects%"
     variables: [ "step" ]
     interval: 1
