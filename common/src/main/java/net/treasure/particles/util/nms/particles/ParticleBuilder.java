@@ -26,12 +26,12 @@ public class ParticleBuilder {
     private Location location;
     private int amount = 1;
     private float offsetX = 0, offsetY = 0, offsetZ = 0;
-    private float extra = 1;
+    private float speed = 1;
     private Object data;
     private boolean longDistance;
 
     public ParticleBuilder copy() {
-        return new ParticleBuilder(particle, viewers, source, location, amount, offsetX, offsetY, offsetZ, extra, data, longDistance);
+        return new ParticleBuilder(particle, viewers, source, location, amount, offsetX, offsetY, offsetZ, speed, data, longDistance);
     }
 
     public Predicate<Player> filter() {
@@ -55,15 +55,6 @@ public class ParticleBuilder {
         this.offsetY = (float) offsetY;
         this.offsetZ = (float) offsetZ;
         return this;
-    }
-
-    public ParticleBuilder speed(double speed) {
-        this.extra = (float) speed;
-        return this;
-    }
-
-    public float speed() {
-        return extra;
     }
 
     public ParticleBuilder offsetColor(Color color) {

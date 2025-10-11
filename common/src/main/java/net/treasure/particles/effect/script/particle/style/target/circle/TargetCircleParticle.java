@@ -36,14 +36,16 @@ public class TargetCircleParticle extends CircleParticle {
                                 RangeArgument spread, IntArgument duration, TargetPoint targetPoint,
                                 IntArgument particles, RangeArgument radius, boolean tickData, boolean vertical,
                                 VectorArgument position, VectorArgument offset, VectorArgument multiplier,
-                                ColorData colorData, Object particleData,
+                                ColorData colorData, int colorAlpha,
+                                Object particleData,
                                 IntArgument amount, RangeArgument speed, RangeArgument size,
                                 boolean directionalX, boolean directionalY, boolean longDistance,
                                 EntityType entityTypeFilter, boolean spawnEffectOnPlayer) {
         super(particle, origin,
                 particles, radius, tickData, vertical,
                 position, offset, multiplier,
-                colorData, particleData,
+                colorData, colorAlpha,
+                particleData,
                 amount, speed, size,
                 directionalX, directionalY, longDistance,
                 entityTypeFilter, spawnEffectOnPlayer);
@@ -112,7 +114,8 @@ public class TargetCircleParticle extends CircleParticle {
                 spread, duration, targetPoint,
                 particles, radius, tickData, vertical,
                 position, offset, multiplier,
-                colorData == null ? null : colorData.clone(), particleData,
+                colorData == null ? null : colorData.clone(), colorAlpha,
+                particleData,
                 amount, speed, size,
                 directionalX, directionalY, longDistance,
                 entityTypeFilter, spawnEffectOnPlayer

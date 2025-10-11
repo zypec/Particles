@@ -13,6 +13,7 @@ import net.treasure.particles.effect.data.EffectData;
 import net.treasure.particles.effect.data.PlayerEffectData;
 import net.treasure.particles.effect.handler.HandlerEvent;
 import net.treasure.particles.effect.script.Script;
+import net.treasure.particles.effect.script.argument.ScriptArgument;
 import net.treasure.particles.effect.script.argument.type.IntArgument;
 import net.treasure.particles.effect.script.argument.type.RangeArgument;
 import net.treasure.particles.effect.script.argument.type.VectorArgument;
@@ -44,6 +45,8 @@ public class ParticleSpawner extends Script {
     protected VectorArgument multiplier;
 
     protected ColorData colorData;
+    protected int colorAlpha = 255;
+
     protected Object particleData;
     protected IntArgument amount;
     protected RangeArgument speed, size;
@@ -127,7 +130,7 @@ public class ParticleSpawner extends Script {
 
     public void updateParticleData(ParticleBuilder builder, EffectData data) {
         if (particleData != null) {
-            builder.data(particleData);
+            builder.data(particleData instanceof ScriptArgument<?> argument ? Particles.NMS.getGenericData(particle, argument.get(this, data)) : particleData);
             return;
         }
 
@@ -142,19 +145,19 @@ public class ParticleSpawner extends Script {
             if (particle == ParticleEffect.DUST_COLOR_TRANSITION)
                 if (colorData instanceof DuoImpl duo) {
                     var pair = duo.nextDuo();
-                    builder.data(Particles.NMS.getColorTransitionData(pair.getKey(), pair.getValue(), size));
+                    builder.data(Particles.NMS.getDustTransitionData(pair.getKey(), pair.getValue(), size));
                 } else
-                    builder.data(Particles.NMS.getColorTransitionData(colorData.next(data), colorData.tempNext(data), size));
+                    builder.data(Particles.NMS.getDustTransitionData(colorData.next(data), colorData.tempNext(data), size));
             else
                 builder.data(Particles.NMS.getDustData(colorData.next(data), size));
+        } else if (particle.hasProperty(Property.PARAM_COLOR)) {
+            builder.data(Particles.NMS.getColorData(particle, colorData.next(data), colorAlpha));
         } else if (particle.hasProperty(Property.OFFSET_COLOR)) {
             builder.data(Particles.NMS.getParticleParam(particle));
             if (particle == ParticleEffect.NOTE && colorData.isNote()) {
                 builder.noteColor(colorData instanceof RandomNoteColorData randomNoteColorData ? randomNoteColorData.random() : colorData.index());
             } else
                 builder.offsetColor(colorData.next(data));
-        } else if (particle.hasProperty(Property.PARAM_COLOR)) {
-            builder.data(Particles.NMS.getGenericData(particle, colorData.next(data)));
         }
     }
 

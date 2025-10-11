@@ -39,7 +39,8 @@ public class AnimatedTextParticle extends TextParticle {
                                 AnimationOrigin animationOrigin, int duration,
                                 Vector[] cache, Vector originVector,
                                 VectorArgument position, VectorArgument offset, VectorArgument multiplier,
-                                ColorData colorData, Object particleData,
+                                ColorData colorData, int colorAlpha,
+                                Object particleData,
                                 IntArgument amount, RangeArgument speed, RangeArgument size,
                                 boolean directionalX, boolean directionalY, boolean longDistance,
                                 EntityType entityTypeFilter, boolean spawnEffectOnPlayer) {
@@ -47,7 +48,8 @@ public class AnimatedTextParticle extends TextParticle {
                 stepX, stepY, scale, tickData, vertical, rotateX, rotateY,
                 cache,
                 position, offset, multiplier,
-                colorData, particleData,
+                colorData, colorAlpha,
+                particleData,
                 amount, speed, size,
                 directionalX, directionalY, longDistance,
                 entityTypeFilter, spawnEffectOnPlayer);
@@ -185,7 +187,8 @@ public class AnimatedTextParticle extends TextParticle {
                 animationOrigin, duration,
                 cache, originVector,
                 position, offset, multiplier,
-                colorData == null ? null : colorData.clone(), particleData,
+                colorData == null ? null : colorData.clone(), colorAlpha,
+                particleData,
                 amount, speed, size,
                 directionalX, directionalY, longDistance,
                 entityTypeFilter, spawnEffectOnPlayer

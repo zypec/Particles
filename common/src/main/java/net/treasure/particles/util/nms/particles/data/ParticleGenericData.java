@@ -1,13 +1,15 @@
 package net.treasure.particles.util.nms.particles.data;
 
 import net.treasure.particles.util.nms.particles.ParticleEffect;
+import org.bukkit.Particle;
 
 public abstract class ParticleGenericData extends ParticleData {
-    protected ParticleEffect particleEffect;
+
+    protected Particle particle;
     protected Object object;
 
     public ParticleGenericData(ParticleEffect particleEffect, Object object) {
-        this.particleEffect = particleEffect;
+        this.particle = particleEffect.bukkit();
         this.object = object;
     }
 }

@@ -43,11 +43,18 @@ public class PolygonParticle extends ParticleSpawner {
                            boolean tickData, boolean vertical,
                            Vector[] cache,
                            VectorArgument position, VectorArgument offset, VectorArgument multiplier,
-                           ColorData colorData, Object particleData,
+                           ColorData colorData, int colorAlpha,
+                           Object particleData,
                            IntArgument amount, RangeArgument speed, RangeArgument size,
                            boolean directionalX, boolean directionalY, boolean longDistance,
                            EntityType entityTypeFilter, boolean spawnEffectOnPlayer) {
-        super(particle, origin, position, offset, multiplier, colorData, particleData, amount, speed, size, directionalX, directionalY, longDistance, entityTypeFilter, spawnEffectOnPlayer);
+        super(particle, origin,
+                position, offset, multiplier,
+                colorData, colorAlpha,
+                particleData,
+                amount, speed, size,
+                directionalX, directionalY, longDistance,
+                entityTypeFilter, spawnEffectOnPlayer);
         this.radius = radius;
         this.rotation = rotation;
         this.points = points;
@@ -125,7 +132,8 @@ public class PolygonParticle extends ParticleSpawner {
                 tickData, vertical,
                 cache,
                 position, offset, multiplier,
-                colorData == null ? null : colorData.clone(), particleData,
+                colorData == null ? null : colorData.clone(), colorAlpha,
+                particleData,
                 amount, speed, size,
                 directionalX, directionalY, longDistance,
                 entityTypeFilter, spawnEffectOnPlayer

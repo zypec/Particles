@@ -6,6 +6,7 @@ import net.treasure.particles.constants.Patterns;
 import net.treasure.particles.effect.Effect;
 import net.treasure.particles.effect.exception.ReaderException;
 import net.treasure.particles.effect.script.argument.type.DoubleArgument;
+import net.treasure.particles.effect.script.argument.type.FloatArgument;
 import net.treasure.particles.effect.script.argument.type.IntArgument;
 import net.treasure.particles.effect.script.argument.type.ItemStackArgument;
 import net.treasure.particles.effect.script.argument.type.RangeArgument;
@@ -101,6 +102,8 @@ public abstract class ParticleReader<T extends ParticleSpawner> extends ScriptRe
             c.script().colorData(ColorData.fromString(c));
         }, "color", "color-scheme");
 
+        addValidArgument(c -> c.script().colorAlpha(StaticArgument.asInt(c)), "color-alpha");
+
         addValidArgument(c -> {
             var directional = StaticArgument.asBoolean(c);
             c.script().directionalX(directional).directionalY(directional);
@@ -174,6 +177,21 @@ public abstract class ParticleReader<T extends ParticleSpawner> extends ScriptRe
                 error(c, "Unexpected '" + c.key() + "' value: " + c.value());
             }
         }, "roll");
+
+        addValidArgument(c -> {
+            var particle = c.script().particle();
+            if (particle != null && !particle.hasProperty(Property.REQUIRES_POWER)) {
+                error(c, "You cannot use '" + c.key() + "' with this particle effect: minecraft:" + particle.getFieldName());
+                return;
+            }
+            try {
+                c.script().particleData(FloatArgument.read(c));
+            } catch (ReaderException e) {
+                error(c, "Unexpected '" + c.key() + "' value: " + c.value(), e.getMessage());
+            } catch (Exception ignored) {
+                error(c, "Unexpected '" + c.key() + "' value: " + c.value());
+            }
+        }, "power");
     }
 
     public abstract Context<T> createParticleReaderContext(Effect effect, String type, String line);
@@ -197,6 +215,11 @@ public abstract class ParticleReader<T extends ParticleSpawner> extends ScriptRe
         var colorData = script.colorData();
         if (particle.hasProperty(Property.REQUIRES_COLOR) && colorData == null) {
             error(context.effect(), context.type(), context.line(), "You must define a 'color' value");
+            return false;
+        }
+
+        if (particle.hasProperty(Property.REQUIRES_POWER) && script.particleData() == null) {
+            error(context.effect(), context.type(), context.line(), "You must define a 'power' value");
             return false;
         }
 

@@ -17,12 +17,12 @@ import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.
 import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.DUST;
 import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.OFFSET_COLOR;
 import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.PARAM_COLOR;
+import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.REQUIRES_POWER;
 import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.REQUIRES_BLOCK;
 import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.REQUIRES_COLOR;
 import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.REQUIRES_ITEM;
 import static net.treasure.particles.util.nms.particles.ParticleEffect.Property.REQUIRES_TARGET;
 
-@Getter
 public enum ParticleEffect {
     /**
      * <p>Represents the flame of copper torches.</p>
@@ -283,7 +283,7 @@ public enum ParticleEffect {
      *     <li>Extra: The velocity of this particle can be set, the amount has to be 0</li>
      * </ul>
      */
-    DRAGON_BREATH("dragon_breath", DIRECTIONAL),
+    DRAGON_BREATH("dragon_breath", checkVersion(21, 9) ? List.of(DIRECTIONAL, REQUIRES_POWER) : List.of(DIRECTIONAL)),
     /**
      * <p>
      * Represents lava drips collected on pointed dripstone
@@ -1014,11 +1014,12 @@ public enum ParticleEffect {
      *     <li>Extra: Only the motion on the y-axis can be controlled, the motion on the x- and z-axis are multiplied by 0.1 when setting the values to 0</li>
      * </ul>
      */
-    SPELL("effect"),
+    SPELL("effect", checkVersion(21, 9) ? List.of(PARAM_COLOR, CAN_BE_COLORED) : List.of()),
     /**
      * <p>
-     * Produced when splash potions or lingering potions
-     * of Instant Health or Instant Damage break.
+     * Produced when splash potions or lingering
+     * potions of Instant Health or Instant Damage break.
+     * Also produced trailing spectral arrow entities.
      * </p>
      * <b>Information</b>
      * <ul>
@@ -1027,7 +1028,7 @@ public enum ParticleEffect {
      *     <li>Extra: Only the motion on the y-axis can be controlled, the motion on the x- and z-axis are multiplied by 0.1 when setting the values to 0</li>
      * </ul>
      */
-    SPELL_INSTANT("instant_effect"),
+    SPELL_INSTANT("instant_effect", checkVersion(21, 9) ? List.of(PARAM_COLOR, CAN_BE_COLORED) : List.of()),
     /**
      * <p>
      * Emitted by tipped arrows, produced by ravagers when stunned,
@@ -1042,7 +1043,7 @@ public enum ParticleEffect {
      *     <li>Extra: offsetX, offsetY and offsetZ represent the RGB values of the particle, the amount has to be 0 or the color won't work</li>
      * </ul>
      */
-    SPELL_MOB("entity_effect", OFFSET_COLOR, CAN_BE_COLORED),
+    SPELL_MOB("entity_effect", List.of(checkVersion(20, 5) ? PARAM_COLOR : OFFSET_COLOR, CAN_BE_COLORED)),
     /**
      * <p>Emitted by entities with effects from a beacon or a conduit.</p>
      * <b>Information</b>
@@ -1052,7 +1053,7 @@ public enum ParticleEffect {
      *     <li>Extra: offsetX, offsetY and offsetZ represent the RGB values of the particle, the amount has to be 0 or the color won't work</li>
      * </ul>
      */
-    SPELL_MOB_AMBIENT("ambient_entity_effect", OFFSET_COLOR, CAN_BE_COLORED),
+    SPELL_MOB_AMBIENT((major, minor) -> checkVersion(20, 5) ? "NONE" : "ambient_entity_effect", OFFSET_COLOR, CAN_BE_COLORED),
     /**
      * <p>Emitted by witches.</p>
      * <b>Information</b>
@@ -1331,6 +1332,12 @@ public enum ParticleEffect {
         this.properties = List.of(properties);
     }
 
+    ParticleEffect(String fieldName, List<Property> properties) {
+        this.fieldName = fieldName;
+        this.latestFieldName = fieldName;
+        this.properties = properties;
+    }
+
     ParticleEffect(int majorRequired, String fieldName, Property... properties) {
         this(majorRequired, 0, fieldName, properties);
     }
@@ -1359,14 +1366,15 @@ public enum ParticleEffect {
     }
 
     public enum Property {
-        CAN_BE_COLORED,
         DIRECTIONAL,
+        CAN_BE_COLORED,
         DUST,
         OFFSET_COLOR,
         PARAM_COLOR,
-        REQUIRES_BLOCK,
         REQUIRES_COLOR,
+        REQUIRES_BLOCK,
         REQUIRES_ITEM,
-        REQUIRES_TARGET
+        REQUIRES_TARGET,
+        REQUIRES_POWER
     }
 }
