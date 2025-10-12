@@ -21,7 +21,7 @@ public class MixerHolder extends EffectsHolder {
     private final EnumMap<HandlerEvent, Pair<Effect, TickHandler>> locked;
     private String prefColorGroup;
     @Accessors(fluent = true)
-    private boolean needsColorGroup;
+    protected boolean needsColorGroup;
     @Accessors(fluent = true)
     private boolean canSelectAnotherEffect;
 

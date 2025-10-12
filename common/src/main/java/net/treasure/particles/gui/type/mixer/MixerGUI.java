@@ -249,7 +249,7 @@ public class MixerGUI extends GUI {
 
         var mixData = new MixData();
         mixData.name(text);
-        mixData.needsColorGroup(holder.needsColorGroup());
+        mixData.needsColorGroup(holder.needsColorGroup);
         mixData.prefColorGroup(holder.getPrefColorGroup());
         mixData.handlers(new ArrayList<>(holder.getSelected().stream().map(pair -> new Pair<>(pair.getKey().getKey(), pair.getValue().key)).toList()));
 
