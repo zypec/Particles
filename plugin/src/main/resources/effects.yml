@@ -1,5 +1,5 @@
 # Do not change!
-version: "1.5.0"
+version: "1.5.2"
 effects:
   rainbow-circle:
     display-name: "%rainbow-circle%"
@@ -1121,7 +1121,7 @@ effects:
     name-color-animation: true
     color-group: "default"
     permission: "%spinning%"
-    variables: [ "y=2", "stop=0", "radius=1", "particles=32", "max=2" ]
+    variables: [ "y=2", "stop=0", "radius=1", "max=2" ]
     interval: 1
     icon:
       material: STRING
@@ -1139,17 +1139,18 @@ effects:
           private: true
         scripts:
           - "conditional (stop==1) ? preset roller-start : var max=2"
-      particle:
-        event: NONE
-        depend: [ "timer", "standing-check", "moving-check" ]
-        scripts:
-          - circle [effect=minecraft:instant_effect,particles={particles},radius={radius},color={dynamic=true;revert=false;speed=1.8},origin=feet,tick-data=true,pos={y={y}},amount=0,power=3,vertical=false,directional=false]
       moving-check:
         event: MOVING
         mixer-options:
           private: true
         scripts:
           - "conditional (y==0.25) ? preset roller-stop : var max={y}"
+      particle:
+        event: NONE
+        mixer-options:
+          depend: [ "timer", "standing-check", "moving-check" ]
+        scripts:
+          - circle [effect=minecraft:instant_effect,particles=32,radius={radius},color={dynamic=true;revert=false;speed=1.8},origin=feet,tick-data=true,pos={y={y}},amount=0,power=3,vertical=false,directional=false,on-player=true]
   planner:
     display-name: "%planner%"
     permission: "%spinning%"
