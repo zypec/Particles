@@ -63,7 +63,8 @@ public class PlayerManager {
 
             for (var entry : playerData.colorPreferences.entrySet()) {
                 var effectName = entry.getKey();
-                if (!effectManager.has(effectName)) continue;
+                if (!effectManager.has(effectName) && playerData.mixData.stream().noneMatch(mixData -> mixData.getFinalName(player).equals(effectName)))
+                    continue;
                 var colorScheme = colorManager.getColorScheme(entry.getValue());
                 if (colorScheme == null) continue;
                 data.getColorPreferences().put(effectName, colorScheme);
@@ -73,6 +74,7 @@ public class PlayerManager {
             if (Permissions.MIX_LIMIT_ENABLED) {
                 var mixLimit = data.getMixLimit();
                 if (mixLimit != -1 && data.getMixData().size() > mixLimit) {
+                    data.getMixData().subList(mixLimit, data.getMixData().size()).forEach(mixData -> data.getColorPreferences().remove(mixData.getFinalName(player)));
                     data.setMixData(data.getMixData().subList(0, mixLimit));
                     data.setCurrentEffect(null);
                 }
