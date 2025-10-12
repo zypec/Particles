@@ -1,5 +1,5 @@
 # Do not change!
-version: "1.5.1"
+version: "1.5.2"
 # GUI options
 animation: # GUI animations
   enabled: true
@@ -151,6 +151,9 @@ styles:
             material: LIME_STAINED_GLASS_PANE
     handlers:
       elements:
+        none:
+          item:
+            material: STRUCTURE_VOID
         elytra:
           item:
             material: ELYTRA
@@ -166,6 +169,9 @@ styles:
         projectile:
           item:
             material: CROSSBOW
+        projectile-hit:
+          item:
+            material: ARROW
         mob-kill:
           item:
             material: CAVE_SPIDER_SPAWN_eGG
@@ -303,6 +309,9 @@ styles:
             material: LIME_STAINED_GLASS_PANE
     handlers:
       elements:
+        none:
+          item:
+            material: STRUCTURE_VOID
         elytra:
           item:
             material: ELYTRA
@@ -318,6 +327,9 @@ styles:
         projectile:
           item:
             material: CROSSBOW
+        projectile-hit:
+          item:
+            material: ARROW
         mob-kill:
           item:
             material: CAVE_SPIDER_SPAWN_eGG
