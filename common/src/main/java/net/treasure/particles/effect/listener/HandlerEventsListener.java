@@ -144,6 +144,7 @@ public class HandlerEventsListener implements Listener {
         if (player.getGameMode() != GameMode.CREATIVE && event.getEntity() instanceof Trident) {
             var trident = player.getInventory().getItemInMainHand().getType() == Material.TRIDENT ? player.getInventory().getItemInMainHand() : player.getInventory().getItemInOffHand();
             if (trident.getItemMeta() == null || !trident.getItemMeta().hasEnchant(Enchantment.LOYALTY)) return;
+            player.setMetadata(Keys.NAMESPACE, new FixedMetadataValue(TreasureParticles.getPlugin(), true));
             event.getEntity().setMetadata(Keys.NAMESPACE, new FixedMetadataValue(TreasureParticles.getPlugin(), true));
         }
     }
