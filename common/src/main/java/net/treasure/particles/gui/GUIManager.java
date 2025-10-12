@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 @Getter
 public class GUIManager implements DataHolder {
 
-    public static final String VERSION = "1.5.1";
+    public static final String VERSION = "1.5.2";
 
     private final ConfigurationGenerator generator;
     private YamlConfiguration config;

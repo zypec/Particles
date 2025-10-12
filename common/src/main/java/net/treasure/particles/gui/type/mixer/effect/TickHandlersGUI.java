@@ -25,6 +25,7 @@ public class TickHandlersGUI {
     private static GUIManager MANAGER;
     private static Translations TRANSLATIONS;
 
+    public static ItemStack NONE_ELEMENT = new ItemStack(Material.PAPER);
     public static EnumMap<HandlerEvent, ItemStack> ELEMENTS = new EnumMap<>(HandlerEvent.class);
 
     public static void configure(GUIManager manager) {
@@ -36,6 +37,7 @@ public class TickHandlersGUI {
         for (var event : HandlerEvent.values()) {
             ELEMENTS.put(event, GUIElements.getItemStack(HANDLERS, event.translationKey(), new ItemStack(Material.PAPER)));
         }
+        NONE_ELEMENT = GUIElements.getItemStack(HANDLERS, "none", NONE_ELEMENT);
     }
 
     public static void open(PlayerEffectData data, MixerHolder mixerHolder, Effect effect) {
@@ -55,8 +57,8 @@ public class TickHandlersGUI {
         for (int i = 0, handlersSize = handlers.size(); i < handlersSize; i++) {
             var handler = handlers.get(i);
             var selected = mixerHolder.isSelected(handler);
-            var eventTranslation = TRANSLATIONS.get("events." + handler.event.translationKey());
-            holder.setItem(i, new CustomItem(ELEMENTS.get(handler.event))
+            var eventTranslation = TRANSLATIONS.get("events." + (handler.event == null ? "none" : handler.event.translationKey()));
+            holder.setItem(i, new CustomItem(handler.event == null ? NONE_ELEMENT : ELEMENTS.get(handler.event))
                     .setDisplayName(MessageUtils.gui(handler.displayName))
                     .addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
                     .glow(selected)

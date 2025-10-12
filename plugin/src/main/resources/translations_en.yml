@@ -111,6 +111,7 @@ commands:
     arg-mix-name: "mix-name"
 # Event Names
 events:
+  none: "Any"
   static: "Static"
   elytra: "Elytra"
   moving: "Moving"

@@ -111,6 +111,7 @@ commands:
     arg-mix-name: "mix-ismi"
 # Event İsimleri
 events:
+  none: "Herhangi"
   static: "Statik"
   elytra: "Elitra"
   moving: "Hareket Etme"
