@@ -1,5 +1,5 @@
 # Do not change!
-version: "1.5.2"
+version: "1.5.3"
 
 # Translations locale (default=EN)
 locale: EN
@@ -22,7 +22,7 @@ auto-update-configurations: true
 auto-save-interval: 10 # Minutes
 
 # Toggle effect permission check (default=true)
-# If this setting is enabled, players will be checked when the following events occur whether they have permission when they're using the TrParticles effects
+# If this setting is enabled, players will be checked when the following events occur whether they have permission when they're using the particles effects
 # In other words, if this option is disabled, players will only be checked when they're selecting an effect on GUI or selecting an effect with the "/tre select" command
 # Event list:
 # -player joining server
@@ -42,7 +42,7 @@ chat-logs: true
 # Database Settings
 database:
   type: "sqlite"
-  table: "trparticles_data"
+  table: "particles_data"
   # For MySQL
   address: "localhost"
   port: "3306"
@@ -52,45 +52,45 @@ database:
 
 permissions:
   # General
-  base: "trparticles.base" # Base command permission (GUI)
-  mixer: "trparticles.mixer" # Effect mix permission
-  admin: "trparticles.admin" # Admin commands permission
+  base: "particles.base" # Base command permission (GUI)
+  mixer: "particles.mixer" # Effect mix permission
+  admin: "particles.admin" # Admin commands permission
 
   # Mixer Limits
   # ------------
   # If this option is enabled, players can only create a certain amount of effect mix
-  # Permission: trparticles.mix_limit.<MAX_MIX>
-  # Example: trparticles.mix_limit.9
+  # Permission: particles.mix_limit.<MAX_MIX>
+  # Example: particles.mix_limit.9
   mix-limit-enabled: false
   # ------------
   # If this option is enabled, players can only select a certain amount of effect for effect mix
-  # Permission: trparticles.mix_limit.<MAX_EFFECTS>
-  # Example: trparticles.mix_effect_limit.2
+  # Permission: particles.mix_limit.<MAX_EFFECTS>
+  # Example: particles.mix_effect_limit.2
   mix-effect-limit-enabled: false
 
   # Effects Visibility
-  # You can show TrParticles effects for the players who have permission, just set the "effects-visibility-permission" to true
+  # You can show particles effects for the players who have permission, just set the "effects-visibility-permission" to true
   # If this option is enabled, give the "can-see-effects" permission to players
   effects-visibility-permission: false
-  can-see-effects: "trparticles.can_see_effects"
+  can-see-effects: "particles.can_see_effects"
 
   # Effects' Permissions
   # Please check the effects.yml file if you want to add or remove permissions
   # You can read the wiki page for detailed information: https://treasurestore.gitbook.io/treasure-particles/effects/basic-usage#permission
   # -------------------------------------
   # Permission to access all the effects
-  access-all-effects: "trparticles.access_all_effects"
+  access-all-effects: "particles.access_all_effects"
   # Permission groups
-  rainbow-effects: "trparticles.effects.rainbow" # Permission for rainbow-colored effects
-  gradient-effects: "trparticles.effects.gradient" # Permission for gradient
-  pulse-effects: "trparticles.effects.pulse" # Permission for pulse effects
-  spinning: "trparticles.effects.spinning" # Permission for spinning effects
-  parkour: "trparticles.effects.parkour" # Permission for parkour effects
-  weather: "trparticles.effects.weather" # Permission for snow/rain effects
-  tail-effects: "trparticles.effects.tail" # Permission for tail effects
-  text-effects: "trparticles.effects.text" # Permission for text effects
-  death-effects: "trparticles.effects.death" # Permission for death effects
-  basic: "trparticles.effects.basic" # Permission for basic effects
-  special: "trparticles.effects.special" # Permission for special effects
+  rainbow-effects: "particles.effects.rainbow" # Permission for rainbow-colored effects
+  gradient-effects: "particles.effects.gradient" # Permission for gradient
+  pulse-effects: "particles.effects.pulse" # Permission for pulse effects
+  spinning: "particles.effects.spinning" # Permission for spinning effects
+  parkour: "particles.effects.parkour" # Permission for parkour effects
+  weather: "particles.effects.weather" # Permission for snow/rain effects
+  tail-effects: "particles.effects.tail" # Permission for tail effects
+  text-effects: "particles.effects.text" # Permission for text effects
+  death-effects: "particles.effects.death" # Permission for death effects
+  basic: "particles.effects.basic" # Permission for basic effects
+  special: "particles.effects.special" # Permission for special effects
   # Color permissions
-  seasonal-colors: "trparticles.colors.seasonal" # Permission for seasonal colors
+  seasonal-colors: "particles.colors.seasonal" # Permission for seasonal colors

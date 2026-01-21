@@ -1,0 +1,112 @@
+package dev.zypec.particles.effect.script.particle.style.circle;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+import dev.zypec.particles.color.data.ColorData;
+import dev.zypec.particles.effect.data.EffectData;
+import dev.zypec.particles.effect.handler.HandlerEvent;
+import dev.zypec.particles.effect.script.argument.type.IntArgument;
+import dev.zypec.particles.effect.script.argument.type.RangeArgument;
+import dev.zypec.particles.effect.script.argument.type.VectorArgument;
+import dev.zypec.particles.effect.script.particle.ParticleContext;
+import dev.zypec.particles.effect.script.particle.ParticleSpawner;
+import dev.zypec.particles.effect.script.particle.config.LocationOrigin;
+import dev.zypec.particles.util.math.MathUtils;
+import dev.zypec.particles.util.nms.particles.ParticleBuilder;
+import dev.zypec.particles.util.nms.particles.ParticleEffect;
+import dev.zypec.particles.util.nms.particles.PacketHandler;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+
+@Getter
+@Setter
+@Accessors(fluent = true)
+@NoArgsConstructor
+public class CircleParticle extends ParticleSpawner {
+
+    protected IntArgument particles = new IntArgument(32);
+    protected RangeArgument radius = new RangeArgument(1f);
+    protected boolean tickData = false;
+    protected boolean vertical = true;
+
+    public CircleParticle(ParticleEffect particle, LocationOrigin origin,
+                          IntArgument particles, RangeArgument radius, boolean tickData, boolean vertical,
+                          VectorArgument position, VectorArgument offset, VectorArgument multiplier,
+                          ColorData colorData, int colorAlpha,
+                          Object particleData,
+                          IntArgument amount, RangeArgument speed, RangeArgument size,
+                          boolean directionalX, boolean directionalY, boolean longDistance,
+                          EntityType entityTypeFilter, boolean spawnEffectOnPlayer) {
+        super(particle, origin,
+                position, offset, multiplier,
+                colorData, colorAlpha,
+                particleData,
+                amount, speed, size,
+                directionalX, directionalY, longDistance,
+                entityTypeFilter, spawnEffectOnPlayer);
+        this.particles = particles;
+        this.radius = radius;
+        this.tickData = tickData;
+        this.vertical = vertical;
+    }
+
+    @Override
+    public TickResult tick(EffectData data, HandlerEvent event, int times) {
+        sendParticles(data, event, null);
+        return TickResult.NORMAL;
+    }
+
+    @Nullable
+    public ParticleContext sendParticles(EffectData data, HandlerEvent event, Predicate<Player> viewers) {
+        var context = tick(data, event, true, false);
+        if (context == null) return null;
+
+        if (viewers != null)
+            context.builder.viewers(viewers);
+
+        sendParticles(data, context);
+        return context;
+    }
+
+    public void sendParticles(EffectData data, ParticleContext context) {
+        var builder = context.builder;
+
+        var particles = this.particles.get(this, data);
+        var radius = this.radius.get(this, data);
+
+        updateParticleData(builder, data);
+
+        List<ParticleBuilder> builders = new ArrayList<>();
+
+        var constant = MathUtils.PI2 / particles;
+        for (int i = 0; i < particles; i++) {
+            var r = constant * i;
+            builders.add(builder.copy().location(location(context, r, radius, vertical)));
+            if (tickData)
+                updateParticleData(builder, data);
+        }
+
+        PacketHandler.send(builders);
+    }
+
+    @Override
+    public CircleParticle clone() {
+        return new CircleParticle(
+                particle, origin,
+                particles, radius, tickData, vertical,
+                position, offset, multiplier,
+                colorData == null ? null : colorData.clone(), colorAlpha,
+                particleData,
+                amount, speed, size,
+                directionalX, directionalY, longDistance,
+                entityTypeFilter, spawnEffectOnPlayer
+        );
+    }
+}

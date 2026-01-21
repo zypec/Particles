@@ -1,0 +1,242 @@
+package dev.zypec.particles.gui.type.effects;
+
+import lombok.Getter;
+import dev.zypec.particles.Particles;
+import dev.zypec.particles.color.ColorManager;
+import dev.zypec.particles.effect.Effect;
+import dev.zypec.particles.effect.handler.HandlerEvent;
+import dev.zypec.particles.gui.GUIManager;
+import dev.zypec.particles.gui.config.ElementType;
+import dev.zypec.particles.gui.config.GUIElements;
+import dev.zypec.particles.gui.config.GUIElements.ElementInfo;
+import dev.zypec.particles.gui.config.GUISounds;
+import dev.zypec.particles.gui.task.GUITask;
+import dev.zypec.particles.gui.type.GUI;
+import dev.zypec.particles.locale.Translations;
+import dev.zypec.particles.permission.Permissions;
+import dev.zypec.particles.player.PlayerManager;
+import dev.zypec.particles.util.item.CustomItem;
+import dev.zypec.particles.util.message.MessageUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import static dev.zypec.particles.gui.type.GUIType.EFFECTS;
+
+public class EffectsGUI extends GUI {
+
+    // Managers
+    private final PlayerManager playerManager;
+    private final ColorManager colorManager;
+
+    // GUI Elements
+    public static ElementInfo DEFAULT_ICON;
+    private ElementInfo RANDOM_EFFECT;
+    private ElementInfo RESET;
+    private ElementInfo MIXER;
+
+    @Getter
+    private int maxEffects;
+
+    public EffectsGUI(GUIManager manager) {
+        super(manager, EFFECTS);
+        this.effectManager = Particles.getEffectManager();
+        this.playerManager = Particles.getPlayerManager();
+        this.colorManager = Particles.getColorManager();
+    }
+
+    @Override
+    public void reload() {
+        super.reload();
+        DEFAULT_ICON = GUIElements.element(type, ElementType.DEFAULT_ICON, 'E', new ItemStack(Material.LEATHER_BOOTS));
+        RANDOM_EFFECT = GUIElements.element(type, ElementType.RANDOM_EFFECT, 'r', new ItemStack(Material.YELLOW_STAINED_GLASS_PANE));
+        RESET = GUIElements.element(type, ElementType.RESET, 'R', new ItemStack(Material.RED_STAINED_GLASS_PANE));
+        MIXER = GUIElements.element(type, ElementType.MIXER, 'M', new ItemStack(Material.END_CRYSTAL));
+        maxEffects = DEFAULT_ICON.slots().length;
+    }
+
+    @Override
+    public void open(Player player) {
+        var holder = new EffectsHolder();
+        open(player, holder);
+    }
+
+    public void open(Player player, int page) {
+        var holder = new EffectsHolder();
+        holder.setPage(page);
+        open(player, holder);
+    }
+
+    public void open(Player player, EffectsHolder holder) {
+        var filter = holder.getFilter();
+        var effects = effectManager.getEffects().stream().filter(effect -> (filter == null || effect.getEvents().contains(filter)) && effect.canUse(player)).toList();
+        open(player, holder, effects);
+    }
+
+    public void open(Player player, EffectsHolder holder, List<Effect> effects) {
+        // Variables
+        var data = playerManager.getEffectData(player);
+        var colorCycleSpeed = manager.getColorCycleSpeed();
+        var effectSlots = DEFAULT_ICON.slots();
+
+        var page = holder.getPage();
+
+        // Create inventory
+        var inventory = Bukkit.createInventory(holder, layout.getSize(), MessageUtils.parseLegacy(Translations.EFFECTS_GUI_TITLE));
+        holder.setInventory(inventory);
+
+        holder.setAvailableFilters(effectManager.getEffects()
+                .stream()
+                .filter(effect -> effect.canUse(player))
+                .flatMap(effect -> effect.getEvents().stream().filter(event -> event != HandlerEvent.STATIC))
+                .distinct()
+                .toList()
+        );
+
+        super.commonItems(player, holder)
+                .pageItems(player, holder, (page + 1) * maxEffects < effects.size(), () -> open(player, holder, effects))
+                .filterItem(player, holder, () -> open(player, holder));
+
+        //region Reset effect button
+        if (data.getCurrentEffect() != null && RESET.isEnabled())
+            for (int slot : RESET.slots())
+                holder.setItem(slot,
+                        new CustomItem(RESET.item())
+                                .setDisplayName(MessageUtils.gui(Translations.EFFECTS_GUI_RESET))
+                                .addLore(MessageUtils.gui(Translations.EFFECTS_GUI_CURRENT, data.getCurrentEffect().getDisplayName())),
+                        event -> {
+                            data.setCurrentEffect(null);
+                            open(player);
+                            GUISounds.play(player, GUISounds.RESET);
+                        });
+        else if (RESET.isEnabled() && BORDERS.isEnabled())
+            for (int slot : RESET.slots())
+                holder.setItem(slot, new CustomItem(BORDERS.item()).emptyName());
+        //endregion
+
+        //region Random effect button
+        if (!effects.isEmpty() && RANDOM_EFFECT.isEnabled()) {
+            var effect = effects.stream().filter(data::checkElytra).toList().get(new Random().nextInt(effects.size()));
+            for (int slot : RANDOM_EFFECT.slots())
+                holder.setItem(slot,
+                        new CustomItem(RANDOM_EFFECT.item())
+                                .setDisplayName(MessageUtils.gui(Translations.EFFECTS_GUI_RANDOM))
+                                .setLore(effect.getParsedDisplayName()),
+                        event -> {
+                            data.setCurrentEffect(effect);
+                            MessageUtils.sendParsed(player, Translations.EFFECT_SELECTED, effect.getDisplayName());
+                            player.closeInventory();
+                            GUISounds.play(player, GUISounds.RANDOM_EFFECT);
+                        });
+        } else if (RANDOM_EFFECT.isEnabled() && BORDERS.isEnabled())
+            for (int slot : RANDOM_EFFECT.slots())
+                holder.setItem(slot, new CustomItem(BORDERS.item()).emptyName());
+        //endregion
+
+        //region Mixer button
+        var hasMix = !data.getMixData().isEmpty();
+        var canCreateAnotherMix = data.canCreateAnotherMix();
+        if (!holder.isPlayerMixGUI() && MIXER.isEnabled() && player.hasPermission(Permissions.MIXER))
+            for (int slot : MIXER.slots())
+                holder.setItem(slot,
+                        new CustomItem(MIXER.item())
+                                .setDisplayName(MessageUtils.gui(Translations.EFFECTS_GUI_MIXER))
+                                .addLore(
+                                        hasMix ? MessageUtils.gui(Translations.EFFECTS_GUI_OPEN_PLAYER_MIX_LIST) : null,
+                                        canCreateAnotherMix ? MessageUtils.gui(Translations.EFFECTS_GUI_OPEN_MIXER) : null
+                                ),
+                        event -> {
+                            if (event.isRightClick() && canCreateAnotherMix) {
+                                manager.mixerGUI().open(player);
+                                GUISounds.play(player, GUISounds.OPEN_MIXER_GUI);
+                                return;
+                            }
+                            if (!hasMix) return;
+                            List<Effect> mixEffects = new ArrayList<>();
+                            var iterator = data.getMixData().iterator();
+                            while (iterator.hasNext()) {
+                                var mixData = iterator.next();
+                                var mixEffect = mixData.get(player);
+                                if (mixEffect == null) {
+                                    iterator.remove();
+                                    continue;
+                                }
+                                mixEffects.add(mixEffect);
+                            }
+                            if (mixEffects.isEmpty()) {
+                                open(player, holder, effects);
+                                return;
+                            }
+                            var newHolder = new EffectsHolder();
+                            newHolder.setPlayerMixGUI(true);
+                            open(player, newHolder, mixEffects);
+                            GUISounds.play(player, GUISounds.OPEN_MIXER_GUI);
+                        });
+        else if ((holder.isPlayerMixGUI() || MIXER.isEnabled()) && BORDERS.isEnabled())
+            for (int slot : MIXER.slots())
+                holder.setItem(slot, new CustomItem(BORDERS.item()).emptyName());
+        //endregion
+
+        // Effects
+        int index = 0;
+        for (int i = page * maxEffects; i < (page + 1) * maxEffects; i++) {
+            if (effects.size() <= i) break;
+
+            int where = effectSlots[index];
+
+            var effect = effects.get(i);
+
+            var colorGroup = effect.getColorGroup();
+            var canUseAny = colorGroup != null && colorGroup.canUseAny(player);
+
+            var pair = holder.colorData(data, effect, colorGroup, canUseAny, colorManager, colorCycleSpeed);
+            var colorData = pair.getKey();
+            var color = pair.getValue();
+
+            var currentEffect = data.getCurrentEffect() != null && (holder.isPlayerMixGUI() ? effect.getKey().equals(data.getCurrentEffect().getKey()) : effect.equals(data.getCurrentEffect()));
+
+            holder.setItem(where, new CustomItem(effect.getIcon())
+                    .setDisplayName(effect.getParsedDisplayName())
+                    .addLore(effect.getDescription())
+                    .addLore(effect.getDescription() != null ? ChatColor.AQUA.toString() : null)
+                    .addLore(MessageUtils.gui(currentEffect ? Translations.EFFECTS_GUI_SELECTED : Translations.EFFECTS_GUI_SELECT))
+                    .addLore(canUseAny ? MessageUtils.gui(Translations.COLOR_SELECTION_AVAILABLE) : null)
+                    .addLore(holder.isPlayerMixGUI() ? MessageUtils.gui(Translations.EFFECTS_GUI_REMOVE_MIX) : null)
+                    .changeColor(color)
+                    .glow(currentEffect)
+                    .addItemFlags(ItemFlag.values()), event -> {
+                if (event.getClick() == ClickType.MIDDLE && holder.isPlayerMixGUI()) {
+                    data.getMixData().removeIf(mixData -> effect.getKey().equals(player.getName() + "/" + mixData.name()));
+                    if (currentEffect)
+                        data.setCurrentEffect(null);
+                    player.closeInventory();
+                    MessageUtils.sendParsed(player, Translations.EFFECTS_GUI_MIX_REMOVED);
+                    return;
+                }
+                if (event.isRightClick() && canUseAny && data.checkElytra(effect)) {
+                    manager.colorsGUI().open(player, effect, 0);
+                    return;
+                }
+                if (!data.setCurrentEffect(effect)) {
+                    MessageUtils.sendParsed(player, Translations.CANNOT_USE_ONLY_ELYTRA);
+                    return;
+                }
+                MessageUtils.sendParsed(player, Translations.EFFECT_SELECTED, effect.getDisplayName());
+                player.closeInventory();
+                GUISounds.play(player, GUISounds.SELECT_EFFECT);
+            }, colorData, effect.isNameColorAnimationEnabled() ? effect.getDisplayName() : null);
+            index += 1;
+        }
+
+        player.openInventory(inventory);
+        if (holder.hasAnimation()) GUITask.getPlayers().add(player);
+    }
+}

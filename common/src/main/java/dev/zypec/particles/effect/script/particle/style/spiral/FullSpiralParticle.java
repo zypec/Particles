@@ -1,0 +1,110 @@
+package dev.zypec.particles.effect.script.particle.style.spiral;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+import dev.zypec.particles.color.data.ColorData;
+import dev.zypec.particles.effect.data.EffectData;
+import dev.zypec.particles.effect.handler.HandlerEvent;
+import dev.zypec.particles.effect.script.argument.type.DoubleArgument;
+import dev.zypec.particles.effect.script.argument.type.IntArgument;
+import dev.zypec.particles.effect.script.argument.type.RangeArgument;
+import dev.zypec.particles.effect.script.argument.type.VectorArgument;
+import dev.zypec.particles.effect.script.particle.ParticleSpawner;
+import dev.zypec.particles.effect.script.particle.config.LocationOrigin;
+import dev.zypec.particles.util.math.MathUtils;
+import dev.zypec.particles.util.nms.particles.ParticleBuilder;
+import dev.zypec.particles.util.nms.particles.ParticleEffect;
+import dev.zypec.particles.util.nms.particles.PacketHandler;
+import org.bukkit.entity.EntityType;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
+@Accessors(fluent = true)
+@NoArgsConstructor
+public class FullSpiralParticle extends ParticleSpawner {
+
+    private RangeArgument radius = new RangeArgument(1f);
+    private IntArgument spirals = new IntArgument(12);
+    private IntArgument steps = new IntArgument(90);
+    private DoubleArgument gap = new DoubleArgument(4D);
+    private boolean tickData = false;
+    private boolean vertical = false;
+    private int reverse = -1;
+
+    private double stepX;
+
+    public FullSpiralParticle(ParticleEffect particle, LocationOrigin origin,
+                              RangeArgument radius, IntArgument spirals, IntArgument steps, DoubleArgument gap,
+                              boolean tickData, boolean vertical,
+                              VectorArgument position, VectorArgument offset, VectorArgument multiplier,
+                              ColorData colorData, int colorAlpha,
+                              Object particleData,
+                              IntArgument amount, RangeArgument speed, RangeArgument size,
+                              boolean directionalX, boolean directionalY, boolean longDistance,
+                              EntityType entityTypeFilter, boolean spawnEffectOnPlayer) {
+        super(particle, origin,
+                position, offset, multiplier,
+                colorData, colorAlpha,
+                particleData,
+                amount, speed, size,
+                directionalX, directionalY, longDistance,
+                entityTypeFilter, spawnEffectOnPlayer);
+        this.radius = radius;
+        this.spirals = spirals;
+        this.steps = steps;
+        this.gap = gap;
+        this.tickData = tickData;
+        this.vertical = vertical;
+    }
+
+    @Override
+    public TickResult tick(EffectData data, HandlerEvent event, int times) {
+        var context = tick(data, event, true, false);
+        if (context == null) return TickResult.NORMAL;
+
+        var builder = context.builder;
+
+        var spirals = this.spirals.get(this, data);
+        var radius = this.radius.get(this, data);
+        var steps = this.steps.get(this, data);
+        var gap = this.gap.get(this, data);
+
+        updateParticleData(builder, data);
+
+        List<ParticleBuilder> builders = new ArrayList<>();
+
+        for (double stepY = -60; stepY < 60; stepY += 120D / spirals) {
+            var r = ((stepX + stepY) / steps) * MathUtils.PI2 * reverse;
+            var location = location(context, stepY / steps * gap, r, radius, vertical);
+            builders.add(builder.copy().location(location));
+
+            if (tickData)
+                updateParticleData(builder, data);
+        }
+
+        stepX++;
+
+        PacketHandler.send(builders);
+        return TickResult.NORMAL;
+    }
+
+    @Override
+    public FullSpiralParticle clone() {
+        return new FullSpiralParticle(
+                particle, origin,
+                radius, spirals, steps, gap,
+                tickData, vertical,
+                position, offset, multiplier,
+                colorData == null ? null : colorData.clone(), colorAlpha,
+                particleData,
+                amount, speed, size,
+                directionalX, directionalY, longDistance,
+                entityTypeFilter, spawnEffectOnPlayer
+        );
+    }
+}

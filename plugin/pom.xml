@@ -4,16 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>net.treasure.particles</groupId>
-        <artifactId>TreasureParticles</artifactId>
-        <version>1.5.2</version>
+        <groupId>dev.zypec.particles</groupId>
+        <artifactId>Particles</artifactId>
+        <version>1.5.3</version>
     </parent>
 
     <artifactId>plugin</artifactId>
 
     <build>
         <defaultGoal>clean install</defaultGoal>
-        <finalName>TrParticles</finalName>
+        <finalName>Particles</finalName>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <resources>
             <resource>
@@ -47,39 +47,39 @@
                     <relocations>
                         <relocation>
                             <pattern>co.aikar.commands</pattern>
-                            <shadedPattern>net.treasure.shaded.acf.commands</shadedPattern>
+                            <shadedPattern>dev.zypec.particles.shaded.acf.commands</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>co.aikar.locales</pattern>
-                            <shadedPattern>net.treasure.shaded.acf.locales</shadedPattern>
+                            <shadedPattern>dev.zypec.particles.shaded.acf.locales</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>net.kyori.adventure</pattern>
-                            <shadedPattern>net.treasure.shaded.kyori.adventure</shadedPattern>
+                            <shadedPattern>dev.zypec.particles.shaded.kyori.adventure</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>net.kyori.examination</pattern>
-                            <shadedPattern>net.treasure.shaded.kyori.examination</shadedPattern>
+                            <shadedPattern>dev.zypec.particles.shaded.kyori.examination</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>net.kyori.option</pattern>
-                            <shadedPattern>net.treasure.shaded.kyori.option</shadedPattern>
+                            <shadedPattern>dev.zypec.particles.shaded.kyori.option</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>net.treasure.shaded.bstats</shadedPattern>
+                            <shadedPattern>dev.zypec.particles.shaded.bstats</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.zaxxer</pattern>
-                            <shadedPattern>net.treasure.shaded.hikaricp</shadedPattern>
+                            <shadedPattern>dev.zypec.particles.shaded.hikaricp</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>net.wesjd.anvilgui</pattern>
-                            <shadedPattern>net.treasure.shaded.anvilgui</shadedPattern>
+                            <shadedPattern>dev.zypec.particles.shaded.anvilgui</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.jeff_media.armorequipevent</pattern>
-                            <shadedPattern>net.treasure.shaded.armorequipevent</shadedPattern>
+                            <shadedPattern>dev.zypec.particles.shaded.armorequipevent</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -97,7 +97,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>common</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
@@ -110,115 +110,121 @@
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
+            <artifactId>v1_21_R7</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_21_R6</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_21_R5</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_21_R4</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_21_R3</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_21_R2</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_21_R1</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_20_R4</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_20_R3</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_20_R2</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_20_R1</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_19_R3</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_19_R2</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_19_R1</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_18_R2</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_18_R1</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_17_R1</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_16_R3</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_16_R2</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>v1_16_R1</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

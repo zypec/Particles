@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>net.treasure.particles</groupId>
-        <artifactId>TreasureParticles</artifactId>
-        <version>1.5.2</version>
+        <groupId>dev.zypec.particles</groupId>
+        <artifactId>Particles</artifactId>
+        <version>1.5.3</version>
     </parent>
 
     <artifactId>v1_21_R6</artifactId>
@@ -24,6 +24,18 @@
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
+                    <groupId>com.mojang</groupId>
+                    <artifactId>authlib</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.mojang</groupId>
+                    <artifactId>logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-core</artifactId>
+                </exclusion>
+                <exclusion>
                     <groupId>com.fasterxml.jackson.core</groupId>
                     <artifactId>jackson-core</artifactId>
                 </exclusion>
@@ -39,11 +51,31 @@
                     <groupId>commons-lang</groupId>
                     <artifactId>commons-lang</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.nimbusds</groupId>
+                    <artifactId>nimbus-jose-jwt</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.lz4</groupId>
+                    <artifactId>lz4-java</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-codec</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-codec-http</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.mysql</groupId>
+                    <artifactId>mysql-connector-j</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
         <dependency>
-            <groupId>net.treasure.particles</groupId>
+            <groupId>dev.zypec.particles</groupId>
             <artifactId>common</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

@@ -1,8 +1,8 @@
 # Bu değeri değiştirmeyin!
-version: "1.5.2"
+version: "1.5.3"
 # Çeviriler
-prefix: "<b><gradient:#c26767:#c28b67:#d47d66>TrParticles</b> <dark_gray><b>|</b></dark_gray>"
-notification: "<prefix><!b> <aqua><b><discord>Discord</discord></b> <dark_gray>/</dark_gray> <b><download>BuiltByBit</download></b> <dark_gray>/</dark_gray> <b><wiki>Wiki</wiki>"
+prefix: "<b><gradient:#c26767:#c28b67:#d47d66>Particles</b> <dark_gray><b>|</b></dark_gray>"
+notification: "<prefix> <b><download>Download</download></b> <dark_gray>/</dark_gray> <b><github>GitHub</github></b> <dark_gray>/</dark_gray> <b><wiki>Wiki</wiki>"
 enabled: "<green>Açık"
 disabled: "<red>Kapalı"
 # GUI Mesajları
@@ -98,7 +98,7 @@ commands:
   effect-static-update: "<prefix><!b> <gray>Static efekt {0} güncellendi:<reset> {1}"
   notifications-toggle: "<prefix><!b> <gray>Bildirimler: {0}"
   notifications-disabled: "<prefix><!b> <red>Bildirimler devre dışı."
-  reloading: "<prefix><!b> <yellow>TreasureParticles yenileniyor"
+  reloading: "<prefix><!b> <yellow>Particles yenileniyor"
   reloaded: "<prefix><!b> <green>Başarıyla yenilendi!"
   args:
     must-be-a-number: "<prefix><!b> <red>{0} bir sayı değil, lütfen bir sayı gir."

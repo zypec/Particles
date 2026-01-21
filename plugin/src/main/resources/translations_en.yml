@@ -1,8 +1,8 @@
 # Do not change!
-version: "1.5.2"
+version: "1.5.3"
 # Translations
-prefix: "<b><gradient:#c26767:#c28b67:#d47d66>TrParticles</b> <dark_gray><b>|</b></dark_gray>"
-notification: "<prefix><!b> <aqua><b><discord>Discord</discord></b> <dark_gray>/</dark_gray> <b><download>BuiltByBit</download></b> <dark_gray>/</dark_gray> <b><wiki>Wiki</wiki>"
+prefix: "<b><gradient:#c26767:#c28b67:#d47d66>Particles</b> <dark_gray><b>|</b></dark_gray>"
+notification: "<prefix> <b><download>Download</download></b> <dark_gray>/</dark_gray> <b><github>GitHub</github></b> <dark_gray>/</dark_gray> <b><wiki>Wiki</wiki>"
 enabled: "<green>Enabled"
 disabled: "<red>Disabled"
 # GUI
@@ -17,7 +17,7 @@ gui:
   filter-down: "<yellow>↓ [Left-Click]"
   filter-reset: "<red>✖ [Middle-Click]"
   effects-gui:
-    title: "      <gradient:#c26767:#c28b67:#d47d66><b>Treasure Particles"
+    title: "      <gradient:#c26767:#c28b67:#d47d66><b>Particles"
     effect-selected: "<green>Selected!"
     select-effect: "<#87FF65>❤ Click to use this effect!"
     random-effect: "<#87FF65>❤ Select Random Effect"
@@ -98,7 +98,7 @@ commands:
   effect-static-update: "<prefix><!b> <gray>Updated static effect {0}:<reset> {1}"
   notifications-toggle: "<prefix><!b> <gray>Notifications: {0}"
   notifications-disabled: "<prefix><!b> <red>Notifications are disabled."
-  reloading: "<prefix><!b> <yellow>Reloading TreasureParticles"
+  reloading: "<prefix><!b> <yellow>Reloading Particles"
   reloaded: "<prefix><!b> <green>Reloaded!"
   args:
     must-be-a-number: "<prefix><!b> <red>{0} must be a number."

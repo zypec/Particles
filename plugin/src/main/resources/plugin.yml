@@ -1,7 +1,7 @@
-name: TrParticles
-author: ItsZypec
-main: net.treasure.particles.TreasurePlugin
+name: Particles
+author: zypec
+main: dev.zypec.particles.Plugin
 version: ${project.version}
 api-version: 1.16
-website: https://treasurestore.gitbook.io/treasure-particles
+website: https://www.spigotmc.org/resources/99860/
 softdepend: [PlaceholderAPI]

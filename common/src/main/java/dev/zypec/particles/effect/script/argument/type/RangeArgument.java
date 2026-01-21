@@ -1,0 +1,89 @@
+package dev.zypec.particles.effect.script.argument.type;
+
+import dev.zypec.particles.constants.Patterns;
+import dev.zypec.particles.effect.data.EffectData;
+import dev.zypec.particles.effect.exception.ReaderException;
+import dev.zypec.particles.effect.script.Script;
+import dev.zypec.particles.effect.script.reader.ReaderContext;
+import dev.zypec.particles.effect.script.variable.Variable;
+import dev.zypec.particles.util.logging.ComponentLogger;
+
+public class RangeArgument extends FloatArgument {
+
+    private Float min, max;
+
+    @Override
+    public String getName() {
+        return "Dynamic Range";
+    }
+
+    public static RangeArgument read(ReaderContext<?> context) throws ReaderException {
+        Float min = null;
+        Float max = null;
+        Object val = null;
+
+        var matcher = Patterns.INNER_SCRIPT.matcher(context.value());
+        while (matcher.find()) {
+            String type = matcher.group("type");
+            String value = matcher.group("value");
+            try {
+                switch (type) {
+                    case "val", "value" -> val = value;
+                    case "min" -> min = StaticArgument.asFloat(value);
+                    case "max" -> max = StaticArgument.asFloat(value);
+                    default -> ComponentLogger.error(context, "Unexpected Range argument: " + type);
+                }
+            } catch (Exception ignored) {
+                ComponentLogger.error(context, "Unexpected '" + type + "' value for range argument: " + value);
+            }
+        }
+
+        if (val == null) {
+            var arg = context.value();
+            try {
+                return new RangeArgument(Float.parseFloat(arg));
+            } catch (Exception e) {
+                arg = Variable.replace(arg);
+                if (context.effect().isValidVariable(arg))
+                    return new RangeArgument(arg);
+                throw new FloatArgument(null).invalidValues();
+            }
+        }
+
+        if (min == null && max == null) return new RangeArgument(val);
+
+        var strVal = String.valueOf(val);
+        try {
+            return new RangeArgument(Float.parseFloat(strVal), min, max).validate(context);
+        } catch (Exception e) {
+            strVal = Variable.replace(strVal);
+            if (context.effect().isValidVariable(strVal))
+                return new RangeArgument(strVal, min, max);
+            throw new RangeArgument(null).invalidValues();
+        }
+    }
+
+    public RangeArgument(Object value, Float min, Float max) {
+        super(value);
+        this.min = min;
+        this.max = max;
+    }
+
+    public RangeArgument(Object value) {
+        super(value);
+    }
+
+    @Override
+    public Float get(Script script, EffectData data) {
+        var result = super.get(script, data);
+        if (max != null && result > max) return max;
+        else if (min != null && result < min) return min;
+        else return result;
+    }
+
+    @Override
+    public RangeArgument validate(ReaderContext<?> context) throws ReaderException {
+        super.validate(context);
+        return this;
+    }
+}

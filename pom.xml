@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>net.treasure.particles</groupId>
-    <artifactId>TreasureParticles</artifactId>
-    <version>1.5.2</version>
+    <groupId>dev.zypec.particles</groupId>
+    <artifactId>Particles</artifactId>
+    <version>1.5.3</version>
     <packaging>pom</packaging>
     <modules>
         <module>common</module>
@@ -30,6 +30,7 @@
         <module>v1_21_R4</module>
         <module>v1_21_R5</module>
         <module>v1_21_R6</module>
+        <module>v1_21_R7</module>
     </modules>
 
     <properties>
