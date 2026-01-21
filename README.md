@@ -1,3 +1,3 @@
-# TreasureParticles
+# Particles
 
-The most intelligent particles plugin
+The most intelligent particles plugin for Minecraft servers.
