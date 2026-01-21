@@ -39,7 +39,7 @@ public class Plugin extends AbstractPlugin {
         // Main command with completions
         var commandManager = Particles.getCommandManager();
         var aliases = getConfig().getString("command-aliases");
-        commandManager.getCommandReplacements().addReplacement("aliases", "prtc|particles" + (aliases == null ? "" : "|" + aliases));
+        commandManager.getCommandReplacements().addReplacement("aliases", "prt|particles" + (aliases == null ? "" : "|" + aliases));
         commandManager.registerCommand(new MainCommand(this));
         var completions = commandManager.getCommandCompletions();
         completions.registerAsyncCompletion("effects", context -> Particles.getEffectManager().getEffects().stream().map(Effect::getKey).toList());
