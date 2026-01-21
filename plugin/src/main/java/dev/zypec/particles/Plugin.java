@@ -2,6 +2,7 @@ package dev.zypec.particles;
 
 import dev.zypec.particles.color.ColorManager;
 import dev.zypec.particles.command.MainCommand;
+import dev.zypec.particles.command.UpdateChecker;
 import dev.zypec.particles.database.DatabaseManager;
 import dev.zypec.particles.effect.Effect;
 import dev.zypec.particles.effect.EffectManager;
@@ -33,6 +34,12 @@ public class Plugin extends AbstractPlugin {
         // PlaceholderAPI
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"))
             new Expansions().register();
+
+        UpdateChecker.getVersion(this, 99860, version -> {
+            Particles.setOutdated(!getDescription().getVersion().equals(version));
+            if (Particles.isOutdated())
+                getLogger().warning("A new version of Particles is available: " + version);
+        });
     }
 
     private void initializeCommands() {

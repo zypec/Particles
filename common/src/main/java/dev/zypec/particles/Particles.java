@@ -62,6 +62,10 @@ public class Particles {
 
     @Getter
     @Setter
+    private static boolean outdated;
+
+    @Getter
+    @Setter
     private static boolean isPaper;
 
     public static void setPlugin(AbstractPlugin abstractPlugin) {

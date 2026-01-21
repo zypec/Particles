@@ -27,8 +27,12 @@ public class JoinQuitListener implements Listener {
                 playerManager.remove(player);
                 return;
             }
-            if (player.hasPermission(Permissions.ADMIN) && Particles.isNotificationsEnabled() && data.isNotificationsEnabled())
-                MessageUtils.sendParsed(player, Translations.NOTIFICATION);
+            if (!player.hasPermission(Permissions.ADMIN) || !Particles.isNotificationsEnabled() || !data.isNotificationsEnabled())
+                return;
+
+            MessageUtils.sendParsed(player, Translations.NOTIFICATION);
+            if (Particles.isOutdated())
+                MessageUtils.sendParsed(player, "<prefix> <green>Update Available: <download><u>Download Link");
         });
     }
 
