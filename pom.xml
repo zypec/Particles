@@ -6,7 +6,7 @@
 
     <groupId>dev.zypec.particles</groupId>
     <artifactId>Particles</artifactId>
-    <version>1.5.3</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <modules>
         <module>common</module>

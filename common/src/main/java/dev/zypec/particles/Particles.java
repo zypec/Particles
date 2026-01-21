@@ -28,7 +28,7 @@ import java.util.List;
 
 public class Particles {
 
-    public static final String VERSION = "1.5.3"; // config.yml
+    public static final String VERSION = "1.0.0"; // config.yml
 
     @Getter
     private static AbstractPlugin plugin;

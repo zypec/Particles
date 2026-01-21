@@ -1,5 +1,5 @@
 # Do not change!
-version: "1.5.3"
+version: "1.0.0"
 # Translations
 prefix: "<b><gradient:#c26767:#c28b67:#d47d66>Particles</b> <dark_gray><b>|</b></dark_gray>"
 notification: "<prefix> <b><download>Download</download></b> <dark_gray>/</dark_gray> <b><github>GitHub</github></b> <dark_gray>/</dark_gray> <b><wiki>Wiki</wiki>"
@@ -17,7 +17,7 @@ gui:
   filter-down: "<yellow>↓ [Left-Click]"
   filter-reset: "<red>✖ [Middle-Click]"
   effects-gui:
-    title: "      <gradient:#c26767:#c28b67:#d47d66><b>Particles"
+    title: "             <gradient:#c26767:#c28b67:#d47d66><b>Particles"
     effect-selected: "<green>Selected!"
     select-effect: "<#87FF65>❤ Click to use this effect!"
     random-effect: "<#87FF65>❤ Select Random Effect"
