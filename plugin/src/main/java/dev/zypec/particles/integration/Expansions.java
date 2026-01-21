@@ -44,7 +44,7 @@ public class Expansions extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getAuthor() {
-        return "ItsZypec";
+        return "zypec";
     }
 
     @Override
